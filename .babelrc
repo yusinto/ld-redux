@@ -1,0 +1,17 @@
+{
+    "presets": ["es2015", "react", "stage-0"],
+    "plugins": [
+        ["transform-decorators-legacy"],
+        ["react-transform", {
+            "transforms": [{
+                "transform": "react-transform-hmr",
+                "imports": ["react"],
+                "locals": ["module"]
+            }, {
+                // you can have many transforms, not just one
+                "transform": "react-transform-catch-errors",
+                "imports": ["react", "redbox-react"]
+            }]
+        }]
+    ]
+}
