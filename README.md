@@ -1,4 +1,5 @@
 # ld-redux
+
 A library to integrate launch darkly feature toggles with react redux.
 
 Server Sent Events works as well so your app will respond live to feature flag changes without the users having to refresh the browser!
@@ -21,6 +22,7 @@ More documentation coming soon.
     };
     ```
 
+
 2. In your client bootstrap, initialise the launch darkly client by invoking initLD method:
 
     ```javascript
@@ -39,6 +41,7 @@ More documentation coming soon.
     );
     ```
 
+
 3. Include ldReducer as one of the reducers in your app:
 
     ```javascript
@@ -51,10 +54,12 @@ More documentation coming soon.
     });
     ```
 
+
 4. Then in a redux container, declare the kebab-lower-cased keys you setup in launch darkly's dashboard as an object. You'll need 3 helper methods from ld-redux:
     * getFlagsFromState - returns flag values from redux state.
     * mapActionsToProps - maps your redux actions to props and also injects an internal initialiseFlags method required to initialise flags for this component.
     * ldConnect - connect your component to the specified flags.
+    
     
     ```javascript
     import {connect} from 'react-redux';
@@ -86,6 +91,7 @@ More documentation coming soon.
       }
     };
     ```
+    
     
 5. Finally in your component, use your feature flag as this.props.camelCased:
 
