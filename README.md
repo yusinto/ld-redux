@@ -1,64 +1,107 @@
 # ld-redux
-A library to integrate launch darkly feature toggles with react redux
+A library to integrate launch darkly feature toggles with react redux.
+More documentation coming soon.
 
-Documentation coming soon
+### Quickstart
 
-Quickstart:
-1. You'll need redux-thunk and set it up as middleware when creating 
-your redux store:
-```javascript
-import { createStore, applyMiddleware } from 'redux';
-import thunk from 'redux-thunk';
-import reducers from '../reducer';
+1. npm i redux-thunk and set it up as middleware:
 
-export default function() {
-  const store = createStore(reducers, applyMiddleware(thunk));
-  return store;
-};
-```
+    ```javascript
+    import { createStore, applyMiddleware } from 'redux';
+    import thunk from 'redux-thunk';
+    import reducers from '../reducer';
+    
+    export default function() {
+      const store = createStore(reducers, applyMiddleware(thunk));
+      return store;
+    };
+    ```
 
-2. In your client bootstrap:
-```javascript
-import {initLD} from 'ld-redux';
-const store = createStore();
-initLD('57d3a57f53f8630721228f2d', store);
-```
-3. In your main reducer file:
-```javascript
-import {ldReducer} from 'ld-redux';
+2. In your client bootstrap, initialise the launch darkly client by invoking initLD method:
 
-export default combineReducers({
-  yourReducer1,
-  yourReducer2,
-  LD: ldReducer,
-});
-```
-4. Then in a redux container:
-```javascript
-import {getFlagsFromState, mapActionsToProps, ldConnect} from 'ld-redux';
+    ```javascript
+    import {initLD} from 'ld-redux'; // do this
+    
+    const store = createStore();
+    
+    // You can find your clientSideId under Account Settings in launch darkly's dashboard 
+    initLD('your-ld-client-side-id', store); // and do this
+    
+    render(
+      <Provider store={store}>
+        <Router routes={routes} history={browserHistory}/>
+      </Provider>,
+      document.getElementById('reactDiv')
+    );
+    ```
 
-// These must be the keys you set up in launch darkly dashboard (kebab-lower-cased)
-const defaultFlags = {'random-number': false};
+3. Include ldReducer as one of the reducers in your app:
 
-const mapStateToProps = (state) => {
-  // this is your own state
-  const homeState = state.Home;
+    ```javascript
+    import { combineReducers } from 'redux';
+    import {ldReducer} from 'ld-redux'; // do this
+    
+    export default combineReducers({
+      App,
+      LD: ldReducer, // and this
+    });
+    ```
 
-  // Use helper method to subscribe to your flags as camelCased props
-  const flags = getFlagsFromState(state, defaultFlags);
-
-  return {
-    someRandomNumber: homeState.someRandomNumber,
-    ...flags,
-  };
-};
-
-// Use helper method to create mapDispatchToProps, passing your actions to the helper method
-@connect(mapStateToProps, mapActionsToProps(homeActions))
-@ldConnect(defaultFlags) // connect the component to the feature flags it needs
-export default class HomeContainer extends Component {
-  render() {
-    return <HomeComponent {...this.props} />;
-  }
-};
-```
+4. Then in a redux container, declare the kebab-lower-cased keys you setup in launch darkly's dashboard as an object. You'll need 3 helper methods from ld-redux:
+    * getFlagsFromState - returns flag values from redux state.
+    * mapActionsToProps - maps your redux actions to props and also injects an internal initialiseFlags method required to initialise flags for this component
+    * ldConnect - connect your component to the specified flags
+    
+    ```javascript
+    import {connect} from 'react-redux';
+    import * as homeActions from '../action/homeAction';
+    import {getFlagsFromState, mapActionsToProps, ldConnect} from 'ld-redux';
+    
+    // These must be the keys you set up in launch darkly dashboard (kebab-lower-cased)
+    const defaultFlags = {'random-number': false};
+    
+    const mapStateToProps = (state) => {
+      const homeState = state.Home; // your own state
+    
+      // Use getFlagsFromState method to subscribe to your flags as camelCased props i.e. 
+      // your kebab-cased flags will be available in your component as this.props.camelCased
+      const flags = getFlagsFromState(state, defaultFlags);
+    
+      return {
+        someRandomNumber: homeState.someRandomNumber,
+        ...flags,
+      };
+    };
+    
+    // Use mapActionsToProps method to map your actions to props
+    @connect(mapStateToProps, mapActionsToProps(homeActions))
+    @ldConnect(defaultFlags) // connect the component to the feature flags it needs
+    export default class HomeContainer extends Component {
+      render() {
+        return <HomeComponent {...this.props} />;
+      }
+    };
+    ```
+    
+5. Finally in your component, use your feature flag as camelCased props:
+    ```javascript
+    import React, {Component} from 'react';
+    
+    export default class Home extends Component {
+      render() {
+        return (
+          <div>
+            {
+              /* randomNumber injected by ld-redux */
+              this.props.randomNumber ?
+                <div>
+                  <p>Welcome to feature toggling!</p>
+                </div>
+                :
+                'nothing'
+            }
+          </div>
+        );
+      }
+    }
+    ```
