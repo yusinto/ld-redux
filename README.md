@@ -1,10 +1,14 @@
 # ld-redux
 A library to integrate launch darkly feature toggles with react redux.
+
+Server Sent Events works as well so your app will respond live to feature flag changes without the users having to refresh the browser!
+
 More documentation coming soon.
 
 ### Quickstart
 
-1. npm i redux-thunk and set it up as middleware:
+1. npm i redux-thunk ld-redux --save
+ Then set up thunk as middleware:
 
     ```javascript
     import { createStore, applyMiddleware } from 'redux';
@@ -58,17 +62,17 @@ More documentation coming soon.
     import {getFlagsFromState, mapActionsToProps, ldConnect} from 'ld-redux';
     
     // These must be the keys you set up in launch darkly dashboard (kebab-lower-cased)
-    const defaultFlags = {'random-number': false};
+    const defaultFlags = {'feature-flag-key': false};
     
     const mapStateToProps = (state) => {
-      const homeState = state.Home; // your own state
+      const homeState = state.Home;
     
       // Use getFlagsFromState to subscribe to your flags as camelCased props i.e. 
       // your kebab-cased flags will be available in your component as this.props.camelCased
       const flags = getFlagsFromState(state, defaultFlags);
     
       return {
-        someRandomNumber: homeState.someRandomNumber,
+        someState: homeState.someState,
         ...flags,
       };
     };
@@ -84,6 +88,7 @@ More documentation coming soon.
     ```
     
 5. Finally in your component, use your feature flag as this.props.camelCased:
+
     ```javascript
     import React, {Component} from 'react';
     
@@ -92,8 +97,8 @@ More documentation coming soon.
         return (
           <div>
             {
-              /* randomNumber injected by ld-redux */
-              this.props.randomNumber ?
+              /* featureFlagKey injected by ld-redux */
+              this.props.featureFlagKey ?
                 <div>
                   <p>Welcome to feature toggling!</p>
                 </div>
