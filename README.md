@@ -1,4 +1,4 @@
 # ld-redux
-A library to help integrate launch darkly with a react redux application
+A library to integrate launch darkly feature toggles with react redux
 
 Documentation coming soon
