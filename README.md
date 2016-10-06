@@ -49,8 +49,8 @@ More documentation coming soon.
 
 4. Then in a redux container, declare the kebab-lower-cased keys you setup in launch darkly's dashboard as an object. You'll need 3 helper methods from ld-redux:
     * getFlagsFromState - returns flag values from redux state.
-    * mapActionsToProps - maps your redux actions to props and also injects an internal initialiseFlags method required to initialise flags for this component
-    * ldConnect - connect your component to the specified flags
+    * mapActionsToProps - maps your redux actions to props and also injects an internal initialiseFlags method required to initialise flags for this component.
+    * ldConnect - connect your component to the specified flags.
     
     ```javascript
     import {connect} from 'react-redux';
@@ -63,7 +63,7 @@ More documentation coming soon.
     const mapStateToProps = (state) => {
       const homeState = state.Home; // your own state
     
-      // Use getFlagsFromState method to subscribe to your flags as camelCased props i.e. 
+      // Use getFlagsFromState to subscribe to your flags as camelCased props i.e. 
       // your kebab-cased flags will be available in your component as this.props.camelCased
       const flags = getFlagsFromState(state, defaultFlags);
     
@@ -73,7 +73,7 @@ More documentation coming soon.
       };
     };
     
-    // Use mapActionsToProps method to map your actions to props
+    // Use mapActionsToProps to map your actions to props
     @connect(mapStateToProps, mapActionsToProps(homeActions))
     @ldConnect(defaultFlags) // connect the component to the feature flags it needs
     export default class HomeContainer extends Component {
@@ -83,7 +83,7 @@ More documentation coming soon.
     };
     ```
     
-5. Finally in your component, use your feature flag as camelCased props:
+5. Finally in your component, use your feature flag as this.props.camelCased:
     ```javascript
     import React, {Component} from 'react';
     

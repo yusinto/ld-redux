@@ -1,6 +1,6 @@
 {
   "name": "ld-redux",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "A library to integrate launch darkly feature toggles with react redux",
   "main": "lib/index.js",
   "scripts": {
