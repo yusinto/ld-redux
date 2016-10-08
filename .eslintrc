@@ -31,28 +31,11 @@
     "no-trailing-spaces": 0,
     "no-underscore-dangle": 0,
     "no-use-before-define": 0,
-  },
-  "env": {
-    "browser": true,
-    "jest": true,
-    "node": true,
+    "guard-for-in": 0,
+    "no-restricted-syntax": 0,
   },
   "globals": {
-    "React": true,
-    "cssModules": true,
-    "classnames": true,
-    "Logger": true,
-    "mixpanel": true,
-    "YT": true,
-    "__IS_BROWSER__": true,
-    "fetch": true,
+    "ldClient": true,
+    "window": true,
   },
-  "settings": {
-    "import/resolver": {
-      // do not throw errors for paths such as 'app/...'
-      "webpack": {
-        "config": "webpack.dev.babel.js"
-      }
-    }
-  }
 }

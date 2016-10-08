@@ -35,7 +35,6 @@ export const initLD = (clientSideId, reduxStore, user) => {
 
   window.ldClient = ldClient.initialize(clientSideId, user);
   window.ldClient.on('ready', () => {
-    console.log(`ldclient ready. user: ${JSON.stringify(user)}`);
     reduxStore.dispatch(setLDReady());
   });
 };
