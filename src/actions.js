@@ -1,7 +1,7 @@
 import camelCase from 'lodash/camelCase';
 import Constants from './constants';
 
-// Stores launch darkly client object in app state
+// Stores launch darkly client object in universal state
 export const setLDReady = () => {
   return {
     type: Constants.LD_READY,

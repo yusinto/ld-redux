@@ -5,31 +5,23 @@ Server Sent Events works as well so your app will respond live to feature flag c
 
 More documentation coming soon.
 
-### Quickstart
+## Installation
 
-1. npm i redux-thunk ld-redux --save
- Then set up thunk as middleware:
+npm i --save ld-redux
 
-    ```javascript
-    import { createStore, applyMiddleware } from 'redux';
-    import thunk from 'redux-thunk';
-    import reducers from '../reducer';
-    
-    export default function() {
-      const store = createStore(reducers, applyMiddleware(thunk));
-      return store;
-    };
-    ```
+You will also need [redux-thunk](https://github.com/gaearon/redux-thunk)
 
-2. In your client bootstrap, initialise the launch darkly client by invoking initLD method:
+## Quickstart
+
+1. In your client bootstrap, initialise the launch darkly client by invoking initLD method:
 
     ```javascript
-    import {initLD} from 'ld-redux'; // do this
+    import {initLD} from 'ld-redux';
     
     const store = createStore();
     
-    // You can find your clientSideId under Account Settings in launch darkly's dashboard 
-    initLD('your-ld-client-side-id', store); // and do this
+    // Pass redux store to ld-redux so it can store flags in redux state
+    initLD('yourClientSideId', store);
     
     render(
       <Provider store={store}>
@@ -39,47 +31,42 @@ More documentation coming soon.
     );
     ```
 
-3. Include ldReducer as one of the reducers in your app:
+2. Include ldReducer as one of the reducers in your app:
 
     ```javascript
     import { combineReducers } from 'redux';
-    import {ldReducer} from 'ld-redux'; // do this
-    
+    import {ldReducer} from 'ld-redux';
+    import reducers from '<your-project>/reducers'; 
+   
     export default combineReducers({
-      App,
-      LD: ldReducer, // and this
+      ...reducers,
+      LD: ldReducer,
     });
     ```
 
-4. Then in a redux container, declare the kebab-lower-cased keys you setup in launch darkly's dashboard as an object. You'll need 3 helper methods from ld-redux:
-    * getFlagsFromState - returns flag values from redux state.
-    * mapActionsToProps - maps your redux actions to props and also injects an internal initialiseFlags method required to initialise flags for this component.
-    * ldConnect - connect your component to the specified flags.
+3. Subscribe to flags in your redux container:
     
     ```javascript
     import {connect} from 'react-redux';
-    import * as homeActions from '../action/homeAction';
     import {getFlagsFromState, mapActionsToProps, ldConnect} from 'ld-redux';
+    import * as yourActions from '<your-project>/actions/yourActions';
     
     // These must be the keys you set up in launch darkly dashboard (kebab-lower-cased)
     const defaultFlags = {'feature-flag-key': false};
     
     const mapStateToProps = (state) => {
-      const homeState = state.Home;
-    
-      // Use getFlagsFromState to subscribe to your flags as camelCased props i.e. 
-      // your kebab-cased flags will be available in your component as this.props.camelCased
+      // Use getFlagsFromState to access flags from LD state
       const flags = getFlagsFromState(state, defaultFlags);
     
       return {
-        someState: homeState.someState,
         ...flags,
       };
     };
     
-    // Use mapActionsToProps to map your actions to props
-    @connect(mapStateToProps, mapActionsToProps(homeActions))
-    @ldConnect(defaultFlags) // connect the component to the feature flags it needs
+    // Use mapActionsToProps to map your own actions to props
+    // Use ldConnect to connect your component to the feature flags it needs
+    @connect(mapStateToProps, mapActionsToProps(yourActions))
+    @ldConnect(defaultFlags)
     export default class HomeContainer extends Component {
       render() {
         return <HomeComponent {...this.props} />;
@@ -87,7 +74,7 @@ More documentation coming soon.
     };
     ```
     
-5. Finally in your component, use your feature flag as this.props.camelCased:
+4. Finally in your component, your feature flags are available from props in camelCase!:
 
     ```javascript
     import React, {Component} from 'react';
