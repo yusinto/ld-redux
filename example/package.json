@@ -1,6 +1,6 @@
 {
   "name": "reactReduxLaunchDarkly",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Feature toggle with react react-router redux and launch darkly",
   "main": "index.js",
   "scripts": {
