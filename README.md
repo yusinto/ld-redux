@@ -97,3 +97,6 @@ You will also need [redux-thunk](https://github.com/gaearon/redux-thunk)
       }
     }
     ```
+
+## Example
+Check the [example](https://github.com/yusinto/ld-redux/tree/master/example) for a complete working spa with react, redux and react-router. 
