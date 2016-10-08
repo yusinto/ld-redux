@@ -1,4 +1,3 @@
-import {bindActionCreators} from 'redux'
 import ldClient from 'ldclient-js';
 import guid from 'guid';
 import ip from 'ip';
@@ -7,7 +6,6 @@ import camelCase from 'lodash/camelCase';
 import {setLDReady} from './actions';
 import reducer from './reducer';
 import connect from './decorator';
-import {initialiseFlags} from './actions';
 
 const userAgentParser = new UAParser();
 const isMobileDevice = typeof window !== 'undefined' && userAgentParser.getDevice().type === 'mobile';
@@ -57,12 +55,6 @@ export const getFlagsFromState = (state, flags) => {
   return {
     isLDReady: ldState.isLDReady,
     ...c,
-  };
-};
-
-export const mapActionsToProps = (...actions) => {
-  return (dispatch) => {
-    return bindActionCreators(Object.assign({}, ...actions, {initialiseFlags}), dispatch);
   };
 };
 

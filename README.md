@@ -9,8 +9,6 @@ More documentation coming soon.
 
 npm i --save ld-redux
 
-You will also need [redux-thunk](https://github.com/gaearon/redux-thunk)
-
 ## Quickstart
 
 1. In your client bootstrap, initialise the launch darkly client by invoking initLD method:
@@ -48,7 +46,7 @@ You will also need [redux-thunk](https://github.com/gaearon/redux-thunk)
     
     ```javascript
     import {connect} from 'react-redux';
-    import {getFlagsFromState, mapActionsToProps, ldConnect} from 'ld-redux';
+    import {getFlagsFromState, ldConnect} from 'ld-redux';
     import * as yourActions from '<your-project>/actions/yourActions';
     
     // These must be the keys you set up in launch darkly dashboard (kebab-lower-cased)
@@ -63,9 +61,8 @@ You will also need [redux-thunk](https://github.com/gaearon/redux-thunk)
       };
     };
     
-    // Use mapActionsToProps to map your own actions to props
     // Use ldConnect to connect your component to the feature flags it needs
-    @connect(mapStateToProps, mapActionsToProps(yourActions))
+    @connect(mapStateToProps, yourActions)
     @ldConnect(defaultFlags)
     export default class HomeContainer extends Component {
       render() {
@@ -74,7 +71,7 @@ You will also need [redux-thunk](https://github.com/gaearon/redux-thunk)
     };
     ```
     
-4. Finally in your component, your feature flags are available from props in camelCase!:
+4. Finally in your component, your feature flags are available from props in camelCase:
 
     ```javascript
     import React, {Component} from 'react';

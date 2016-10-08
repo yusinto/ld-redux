@@ -1,10 +1,22 @@
 import React, {PropTypes, Component} from 'react';
+import {setFlags} from './actions';
 
 export default (flags) => (WrappedComponent) => {
   class WithFeatureFlags extends Component {
+    // Need the store through context to call dispatch
+    // https://github.com/reactjs/redux/issues/362
+    static contextTypes = {
+      store: PropTypes.object.isRequired,
+    };
+
     static propTypes = {
       isLDReady: PropTypes.bool,
     };
+
+    constructor(props) {
+      super(props);
+      this.initialise = ::this.initialise;
+    }
 
     componentDidMount() {
       if (this.props.isLDReady) {
@@ -18,8 +30,23 @@ export default (flags) => (WrappedComponent) => {
       }
     }
 
-    initialise = () => {
-      this.props.initialiseFlags(flags);
+    initialise() {
+      const {dispatch} = this.context.store;
+      const flagValues = {};
+
+      for (const flag in flags) {
+        const camelCasedKey = camelCase(flag);
+        flagValues[camelCasedKey] = ldClient.variation(flag, flags[flag]);
+
+        ldClient.on(`change:${flag}`, current => {
+          const newFlagValues = {};
+          newFlagValues[camelCasedKey] = current;
+
+          dispatch(setFlags(newFlagValues));
+        });
+      }
+
+      dispatch(setFlags(flagValues));
     };
 
     render() {

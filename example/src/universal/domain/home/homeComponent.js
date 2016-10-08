@@ -19,6 +19,10 @@ export default class Home extends Component {
         {
           this.props.randomNumberFlag ?
             <div>
+              <p>
+                SSE works! If you turn off your flag in launch darkly, your app will respond without a browser refresh.
+                Try it!
+              </p>
               <button onClick={this.onClickGenerateRandom}>Generate random number</button>
               <p>{this.props.number}</p>
             </div>
