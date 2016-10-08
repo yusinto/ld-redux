@@ -1,6 +1,6 @@
 # ld-redux
 
-[![npm version](https://img.shields.io/npm/v/ld-redux.svg?style=flat-square)](https://www.npmjs.com/package/ld-redux) [![npm downloads](https://img.shields.io/npm/dm/ld-redux.svg?style=flat-square)](https://www.npmjs.com/package/ld-redux)
+[![npm version](https://img.shields.io/npm/v/ld-redux.svg?style=flat-square)](https://www.npmjs.com/package/ld-redux) [![npm downloads](https://img.shields.io/npm/dm/ld-redux.svg?style=flat-square)](https://www.npmjs.com/package/ld-redux) [![npm](https://img.shields.io/npm/dt/ld-redux.svg?style=flat-square)](https://www.npmjs.com/package/ld-redux) [![npm](https://img.shields.io/npm/l/ld-redux.svg?style=flat-square)](https://www.npmjs.com/package/ld-redux) 
 
 > **A library to integrate launch darkly feature toggle with react redux** :clap:
 
@@ -17,8 +17,10 @@ npm i --save ld-redux
 1. In your client bootstrap, initialise the launch darkly client by invoking initLD method:
 
     ```javascript
+    import createStore from '<your-project>/store';
     import {initLD} from 'ld-redux';
     
+    // standard redux createStore
     const store = createStore();
     
     // Pass redux store to ld-redux so it can store flags in redux state
