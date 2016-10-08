@@ -1,4 +1,5 @@
 import React, {PropTypes, Component} from 'react';
+import {camelCase} from 'lodash/camelCase';
 import {setFlags} from './actions';
 
 export default (flags) => (WrappedComponent) => {
