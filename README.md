@@ -1,5 +1,8 @@
 # ld-redux
-A library to integrate launch darkly feature toggles with react redux.
+
+[![npm version](https://img.shields.io/npm/v/ld-redux.svg?style=flat-square)](https://www.npmjs.com/package/ld-redux) [![npm downloads](https://img.shields.io/npm/dm/ld-redux.svg?style=flat-square)](https://www.npmjs.com/package/ld-redux)
+
+> **A library to integrate launch darkly feature toggle with react redux** :clap:
 
 Server Sent Events works as well so your app will respond live to feature flag changes without the users having to refresh the browser!
 
