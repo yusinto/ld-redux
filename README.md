@@ -18,13 +18,13 @@ npm i --save ld-redux
 
     ```javascript
     import createStore from '<your-project>/store';
-    import {initLD} from 'ld-redux';
+    import ldRedux from 'ld-redux';
     
     // standard redux createStore
     const store = createStore();
     
     // Pass redux store to ld-redux so it can store flags in redux state
-    initLD('yourClientSideId', store);
+    ldRedux.init('yourClientSideId', store);
     
     render(
       <Provider store={store}>
@@ -38,12 +38,12 @@ npm i --save ld-redux
 
     ```javascript
     import { combineReducers } from 'redux';
-    import {ldReducer} from 'ld-redux';
+    import ldRedux from 'ld-redux';
     import reducers from '<your-project>/reducers'; 
    
     export default combineReducers({
       ...reducers,
-      LD: ldReducer,
+      LD: ldRedux.reducer(),
     });
     ```
 
@@ -51,7 +51,7 @@ npm i --save ld-redux
     
     ```javascript
     import {connect} from 'react-redux';
-    import {getFlagsFromState, ldConnect} from 'ld-redux';
+    import ldRedux, {ldConnect} from 'ld-redux';
     import * as yourActions from '<your-project>/actions/yourActions';
     
     // These must be the keys you set up in launch darkly dashboard (kebab-lower-cased)
@@ -59,7 +59,7 @@ npm i --save ld-redux
     
     const mapStateToProps = (state) => {
       // Use getFlagsFromState to access flags from LD state
-      const flags = getFlagsFromState(state, defaultFlags);
+      const flags = ldRedux.getFlags(state, defaultFlags);
     
       return {
         ...flags,

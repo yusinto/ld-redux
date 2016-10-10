@@ -2,12 +2,12 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import * as homeActions from './homeAction';
 import HomeComponent from './homeComponent';
-import {getFlagsFromState, ldConnect} from 'ld-redux';
+import ldRedux, {ldConnect} from 'ld-redux';
 import {homeFlags} from './homeLogic';
 
 const mapStateToProps = (state) => {
   const homeState = state.Home;
-  const flags = getFlagsFromState(state, homeFlags);
+  const flags = ldRedux.getFlags(state, homeFlags);
 
   return {
     ...homeState,

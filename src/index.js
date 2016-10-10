@@ -11,7 +11,7 @@ const userAgentParser = new UAParser();
 const isMobileDevice = typeof window !== 'undefined' && userAgentParser.getDevice().type === 'mobile';
 const isTabletDevice = typeof window !== 'undefined' && userAgentParser.getDevice().type === 'tablet';
 
-export const initLD = (clientSideId, reduxStore, user) => {
+const init = (clientSideId, reduxStore, user) => {
   if (!user) {
     let device;
 
@@ -39,7 +39,7 @@ export const initLD = (clientSideId, reduxStore, user) => {
   });
 };
 
-export const getFlagsFromState = (state, flags) => {
+const getFlags = (state, flags) => {
   const ldState = state.LD;
   const c = {};
 
@@ -58,4 +58,9 @@ export const getFlagsFromState = (state, flags) => {
 };
 
 export const ldConnect = connect;
-export const ldReducer = reducer;
+
+export default {
+  init,
+  getFlags,
+  reducer: () => reducer,
+};
