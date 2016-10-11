@@ -4,6 +4,7 @@
   "description": "A library to integrate launch darkly feature toggles with react redux",
   "main": "lib/index.js",
   "scripts": {
+    "test:watch": "mocha --compilers js:babel-core/register --require tests/setup.js tests/init.test.js --watch",
     "test": "mocha --compilers js:babel-core/register --require tests/setup.js tests/init.test.js",
     "compile": "rimraf lib/* && babel src -d lib",
     "prepublish": "npm run compile",
@@ -32,7 +33,6 @@
     "babel-cli": "^6.16.0",
     "babel-core": "^6.17.0",
     "babel-eslint": "^7.0.0",
-    "babel-plugin-rewire": "^1.0.0",
     "babel-plugin-transform-runtime": "^6.15.0",
     "babel-preset-es2015": "^6.16.0",
     "babel-preset-react": "^6.16.0",
@@ -47,13 +47,12 @@
     "eslint-plugin-react": "^6.3.0",
     "jsdom": "^9.6.0",
     "mocha": "^3.1.1",
-    "rewire": "^2.5.2",
+    "proxyquire": "^1.7.10",
     "rimraf": "^2.5.4",
     "testdouble": "^1.7.0"
   },
   "dependencies": {
     "babel-runtime": "^6.11.6",
-    "guid": "0.0.12",
     "ip": "^1.1.3",
     "keymirror": "^0.1.1",
     "ldclient-js": "^1.1.2",
