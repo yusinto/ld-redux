@@ -2,11 +2,16 @@
 
 [![npm version](https://img.shields.io/npm/v/ld-redux.svg?style=flat-square)](https://www.npmjs.com/package/ld-redux) [![npm downloads](https://img.shields.io/npm/dm/ld-redux.svg?style=flat-square)](https://www.npmjs.com/package/ld-redux) [![npm](https://img.shields.io/npm/dt/ld-redux.svg?style=flat-square)](https://www.npmjs.com/package/ld-redux) [![npm](https://img.shields.io/npm/l/ld-redux.svg?style=flat-square)](https://www.npmjs.com/package/ld-redux) 
 
-> **A library to integrate launch darkly feature toggle with react redux** :clap:
+> **A library to integrate launch darkly with react redux** :clap:
 
-Server Sent Events works as well so your app will respond live to feature flag changes without the users having to refresh the browser!
+[Launch Darkly](https://launchdarkly.com/faq.html) is a great tool for feature flagging and a/b testing. It has a fully capable [client-side javascript sdk](https://github.com/launchdarkly/js-client), so why this package? 
 
-More documentation coming soon.
+If you use react redux and you want to store your feature flags as part of your redux state, this package will do that for you. It does the heavy lifting of:
+
+ * Fetching your flags from launch darkly.
+ * Storing it in your redux state.
+ * Camel casing your keys so you can use them in code with the dot operator. The keys by default are dash separated so you can't do this out of the box with the [official sdk](https://github.com/launchdarkly/js-client).
+ * Server Sent Event works as well so your app will respond live to feature flag changes without the users having to refresh the browser!
 
 ## Installation
 
@@ -86,7 +91,7 @@ npm i --save ld-redux
         return (
           <div>
             {
-              /* featureFlagKey injected by ld-redux */
+              /* featureFlagKey is camelCased & injected by ld-redux */
               this.props.featureFlagKey ?
                 <div>
                   <p>Welcome to feature toggling!</p>
@@ -101,4 +106,4 @@ npm i --save ld-redux
     ```
 
 ## Example
-Check the [example](https://github.com/yusinto/ld-redux/tree/master/example) for a complete working spa with react, redux and react-router. 
+Check the [example](https://github.com/yusinto/ld-redux/tree/master/example) for a fully working spa with react, redux and react-router. 
