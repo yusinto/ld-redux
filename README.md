@@ -63,7 +63,7 @@ npm i --save ld-redux
     const defaultFlags = {'feature-flag-key': false};
     
     const mapStateToProps = (state) => {
-      // Use getFlagsFromState to access flags from LD state
+      // Use getFlags to access flags from LD state
       const flags = ldRedux.getFlags(state, defaultFlags);
     
       return {
