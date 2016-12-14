@@ -51,13 +51,7 @@ export default flags => (WrappedComponent) => {
     }
 
     render() {
-      return (
-        <div>
-          <WrappedComponent
-            {...this.props}
-          />
-        </div>
-      );
+      return <WrappedComponent {...this.props} />;
     }
   }
 
