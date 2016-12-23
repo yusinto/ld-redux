@@ -1,5 +1,5 @@
 import ldClient from 'ldclient-js';
-import uuid from 'node-uuid';
+import uuid from 'uuid';
 import ip from 'ip';
 import UAParser from 'ua-parser-js';
 import {setLDReady} from './actions';
