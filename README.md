@@ -15,6 +15,10 @@ If you use react redux and you want to store your feature flags as part of your 
 
 ## Installation
 
+yarn add ld-redux
+
+or the old school way
+
 npm i --save ld-redux
 
 ## Quickstart
@@ -48,7 +52,7 @@ npm i --save ld-redux
    
     export default combineReducers({
       ...reducers,
-      LD: ldRedux.reducer(),
+      LD: ldRedux.reducer(), // Note: key must be upper case LD
     });
     ```
 
@@ -60,11 +64,11 @@ npm i --save ld-redux
     import * as yourActions from '<your-project>/actions/yourActions';
     
     // These must be the keys you set up in launch darkly dashboard (kebab-lower-cased)
-    const defaultFlags = {'feature-flag-key': false};
+    const homeFlags = {'feature-flag-key': false};
     
     const mapStateToProps = (state) => {
       // Use getFlags to access flags from LD state
-      const flags = ldRedux.getFlags(state, defaultFlags);
+      const flags = ldRedux.getFlags(state, homeFlags);
     
       return {
         ...flags,
@@ -73,7 +77,7 @@ npm i --save ld-redux
     
     // Use ldConnect to connect your component to the feature flags it needs
     @connect(mapStateToProps, yourActions)
-    @ldConnect(defaultFlags)
+    @ldConnect(homeFlags)
     export default class HomeContainer extends Component {
       render() {
         return <HomeComponent {...this.props} />;
@@ -104,6 +108,27 @@ npm i --save ld-redux
       }
     }
     ```
+
+## Advanced API
+### window.ldClient
+The ldRedux.init method (see step 1) initialises the js sdk and stores the resultant object in window.ldClient. You can use 
+this object to access the [official sdk methods](https://github.com/launchdarkly/js-client) directly. For example, you can do things like: 
+
+```javascript
+// track goals
+window.ldClient.track('add to cart');
+
+// change user context
+window.ldClient.identify({key: 'someUserId'});
+```
+
+For more info on changing user context, see the [official documentation](http://docs.launchdarkly.com/docs/js-sdk-reference#section-changing-the-user-context).
+
+### isLDReady 
+This is a boolean flag in LD reducer which gets set to true when the sdk has finished loading. You can subscribe to this state if you 
+need to perform custom operations on component load. By default, the ldRedux.getFlags method injects this flag implicitly so if you follow
+step 3 above, you'll find that isLDReady is already available as props to your component.
+
 
 ## Example
 Check the [example](https://github.com/yusinto/ld-redux/tree/master/example) for a fully working spa with react, redux and react-router. 

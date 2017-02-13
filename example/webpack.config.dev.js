@@ -21,7 +21,7 @@ module.exports = {
       },
       {
         test: /\.jsx?$/,
-        loader: 'babel',
+        loader: 'babel-loader',
         include: path.join(__dirname, 'src'),
         query: {
           // Ripped from: https://github.com/gaearon/babel-plugin-react-transform
