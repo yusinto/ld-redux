@@ -109,9 +109,26 @@ npm i --save ld-redux
     }
     ```
 
-## Advanced API
+## API
+### ldRedux.init(clientSideId, reduxStore, customUser)
+You can initialise the sdk with a custom user by passing it as the third argument to the init method. This must be an object containing 
+at least a "key" property. If you don't specify a customUser object, ldRedux will create a default one that looks like this:
+
+```javascript
+const defaultUser = {
+  key: uuid.v4(), // random guid
+  ip: ip.address(),
+  custom: {
+    browser: userAgentParser.getResult().browser.name,
+    device
+  }
+};
+```
+
+For more info on the user object, see [here](http://docs.launchdarkly.com/docs/js-sdk-reference#section-users).
+
 ### window.ldClient
-The ldRedux.init method (see step 1) initialises the js sdk and stores the resultant object in window.ldClient. You can use 
+Internally the ldRedux.init method above initialises the js sdk and stores the resultant ldClient object in window.ldClient. You can use 
 this object to access the [official sdk methods](https://github.com/launchdarkly/js-client) directly. For example, you can do things like: 
 
 ```javascript
@@ -127,8 +144,7 @@ For more info on changing user context, see the [official documentation](http://
 ### isLDReady 
 This is a boolean flag in LD reducer which gets set to true when the sdk has finished loading. You can subscribe to this state if you 
 need to perform custom operations on component load. By default, the ldRedux.getFlags method injects this flag implicitly so if you follow
-step 3 above, you'll find that isLDReady is already available as props to your component.
-
+step 3 above, you'll find that isLDReady is already available as props in your component.
 
 ## Example
 Check the [example](https://github.com/yusinto/ld-redux/tree/master/example) for a fully working spa with react, redux and react-router. 

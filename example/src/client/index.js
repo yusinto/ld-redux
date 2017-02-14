@@ -8,9 +8,8 @@ import ldRedux from '../../../lib';
 
 const reduxState = window.__INITIAL_STATE__ || undefined;
 const store = createStore(reduxState);
-const user = {};
 
-ldRedux.init('57d3a57f53f8630721228f2d', store, user);
+ldRedux.init('your-client-side-id', store);
 
 render(
   <Provider store={store}>
