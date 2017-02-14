@@ -1,5 +1,24 @@
 import React, {Component} from 'react';
+import {connect} from 'react-redux';
+import * as homeActions from './homeAction';
+import ldRedux, {ldConnect} from 'ld-redux';
 
+const homeFlags = {
+  'dev-test-flag': false
+};
+
+const mapStateToProps = (state) => {
+  const homeState = state.Home;
+  const flags = ldRedux.getFlags(state, homeFlags);
+
+  return {
+    ...homeState,
+    ...flags
+  };
+};
+
+@connect(mapStateToProps, homeActions)
+@ldConnect(homeFlags)
 export default class Home extends Component {
   constructor(props) {
     super(props);
@@ -17,7 +36,7 @@ export default class Home extends Component {
           Welcome to the homepage!
         </p>
         {
-          this.props.randomNumberFlag ?
+          this.props.devTestFlag ?
             <div>
               <p>
                 SSE works! If you turn off your flag in launch darkly, your app will respond without a browser refresh.
