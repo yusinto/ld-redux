@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import * as homeActions from './homeAction';
-import ldRedux, {ldConnect} from '../../../../../lib';
+import ldRedux, {ldConnect} from 'ld-redux';
 
 const homeFlags = {
   'dev-test-flag': false
