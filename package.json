@@ -1,6 +1,6 @@
 {
   "name": "ld-redux",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "A library to integrate launch darkly with react redux",
   "main": "lib/index.js",
   "scripts": {
