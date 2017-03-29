@@ -1,4 +1,4 @@
-import React, {PropTypes, Component} from 'react';
+import React, {PropTypes, Component} from 'react'; // eslint-disable-line import/no-unresolved, import/extensions
 import camelCase from 'lodash/camelCase';
 import {setFlags} from './actions';
 
