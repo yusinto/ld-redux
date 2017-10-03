@@ -8,7 +8,7 @@ const userAgentParser = new UAParser();
 const isMobileDevice = typeof window !== 'undefined' && userAgentParser.getDevice().type === 'mobile';
 const isTabletDevice = typeof window !== 'undefined' && userAgentParser.getDevice().type === 'tablet';
 
-export default (clientSideId, reduxStore, user) => {
+export default (clientSideId, reduxStore, user, options) => {
   if (!user) {
     let device;
 
@@ -30,7 +30,7 @@ export default (clientSideId, reduxStore, user) => {
     };
   }
 
-  window.ldClient = ldClient.initialize(clientSideId, user);
+  window.ldClient = ldClient.initialize(clientSideId, user, options);
   window.ldClient.on('ready', () => {
     reduxStore.dispatch(setLDReady());
   });
