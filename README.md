@@ -110,7 +110,7 @@ npm i --save ld-redux
     ```
 
 ## API
-### init(clientSideId, reduxStore, customUser)
+### init(clientSideId, reduxStore, customUser, options)
 You can initialise the sdk with a custom user by passing it as the third argument to the init method. This must be an object containing
 at least a "key" property. If you don't specify a customUser object, ldRedux will create a default one that looks like this:
 
@@ -127,6 +127,13 @@ const defaultUser = {
 
 For more info on the user object, see [here](http://docs.launchdarkly.com/docs/js-sdk-reference#section-users).
 
+The final parameter `options` can be used to pass in extra options such as [Bootstrapping](https://github.com/launchdarkly/js-client#bootstrapping). For example:
+
+```javascript
+ldRedux.init('yourClientSideId', store, customUser, {
+  bootstrap: 'localStorage'
+});
+```
 
 ### reducer()
 This is ld-redux's reducer comprising of a single boolean flag isLDReady. You must include this reducer in your app
