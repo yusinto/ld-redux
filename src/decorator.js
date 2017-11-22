@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import camelCase from 'lodash/camelCase';
 import {setFlags} from './actions';
 
-export default flags => (WrappedComponent) => {
+export default (flags, setDefaults = true) => (WrappedComponent) => {
   class WithFeatureFlags extends Component {
     // Need the store through context to call dispatch
     // https://github.com/reactjs/redux/issues/362
@@ -38,7 +38,10 @@ export default flags => (WrappedComponent) => {
 
       for (const flag in flags) {
         const camelCasedKey = camelCase(flag);
-        flagValues[camelCasedKey] = ldClient.variation(flag, flags[flag]);
+
+        if (setDefaults) {
+            flagValues[camelCasedKey] = ldClient.variation(flag, flags[flag]);
+        }
 
         ldClient.on(`change:${flag}`, (current) => {
           const newFlagValues = {};
@@ -48,7 +51,9 @@ export default flags => (WrappedComponent) => {
         });
       }
 
-      dispatch(setFlags(flagValues));
+      if (setDefaults) {
+          dispatch(setFlags(flagValues));
+      }
     }
 
     render() {
