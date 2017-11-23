@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import camelCase from 'lodash/camelCase';
 import {setFlags} from './actions';
 
-export default (flags) => (WrappedComponent) => {
+export default flags => (WrappedComponent) => {
   class WithFeatureFlags extends Component {
     // Need the store through context to call dispatch
     // https://github.com/reactjs/redux/issues/362
@@ -36,7 +36,7 @@ export default (flags) => (WrappedComponent) => {
       const {dispatch, getState} = this.context.store;
       const flagValues = {};
       const {LD} = getState();
-      const {isLDReady, ...featureFlags} = LD;
+      const {isLDReady, ...featureFlags} = LD; //eslint-disable-line no-unused-vars
 
       // If the flags have been retrieved on the server side, then we don't need
       // to re-retrieve them on the client side. If we do, the flag settings
@@ -47,7 +47,7 @@ export default (flags) => (WrappedComponent) => {
         const camelCasedKey = camelCase(flag);
 
         if (!flagsInitialised) {
-            flagValues[camelCasedKey] = ldClient.variation(flag, flags[flag]);
+          flagValues[camelCasedKey] = ldClient.variation(flag, flags[flag]);
         }
 
         ldClient.on(`change:${flag}`, (current) => {
@@ -59,7 +59,7 @@ export default (flags) => (WrappedComponent) => {
       }
 
       if (!flagsInitialised) {
-          dispatch(setFlags(flagValues));
+        dispatch(setFlags(flagValues));
       }
     }
 
