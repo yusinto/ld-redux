@@ -33,7 +33,7 @@ export default (flags) => (WrappedComponent) => {
     }
 
     initialise() {
-      const {dispatch} = this.context.store;
+      const {dispatch, getState} = this.context.store;
       const flagValues = {};
       const {LD} = getState();
       const {isLDReady, ...featureFlags} = LD;
