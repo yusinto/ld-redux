@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import camelCase from 'lodash/camelCase';
 import {setFlags} from './actions';
 
-export default (flags, setDefaults = true) => (WrappedComponent) => {
+export default (flags) => (WrappedComponent) => {
   class WithFeatureFlags extends Component {
     // Need the store through context to call dispatch
     // https://github.com/reactjs/redux/issues/362
@@ -35,11 +35,18 @@ export default (flags, setDefaults = true) => (WrappedComponent) => {
     initialise() {
       const {dispatch} = this.context.store;
       const flagValues = {};
+      const {LD} = getState();
+      const {isLDReady, ...featureFlags} = LD;
+
+      // If the flags have been retrieved on the server side, then we don't need
+      // to re-retrieve them on the client side. If we do, the flag settings
+      // would be overridden with the defaults set on the client.
+      const isFeatureFlagsRetrieved = Object(featureFlags).entries.length > 0;
 
       for (const flag in flags) {
         const camelCasedKey = camelCase(flag);
 
-        if (setDefaults) {
+        if (!isFeatureFlagsRetrieved) {
             flagValues[camelCasedKey] = ldClient.variation(flag, flags[flag]);
         }
 
@@ -51,7 +58,7 @@ export default (flags, setDefaults = true) => (WrappedComponent) => {
         });
       }
 
-      if (setDefaults) {
+      if (!isFeatureFlagsRetrieved) {
           dispatch(setFlags(flagValues));
       }
     }
