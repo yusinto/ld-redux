@@ -36,17 +36,12 @@ export default flags => (WrappedComponent) => {
       const {dispatch, getState} = this.context.store;
       const flagValues = {};
       const {LD} = getState();
-      const {isLDReady, ...featureFlags} = LD; //eslint-disable-line no-unused-vars
-
-      // If the flags have been retrieved on the server side, then we don't need
-      // to re-retrieve them on the client side. If we do, the flag settings
-      // would be overridden with the defaults set on the client.
-      const flagsInitialised = Object.entries(featureFlags).length > 0;
+      const {isLDReady, ...currentlySetFlags} = LD; //eslint-disable-line no-unused-vars
 
       for (const flag in flags) {
         const camelCasedKey = camelCase(flag);
 
-        if (!flagsInitialised) {
+        if (!currentlySetFlags[camelCasedKey]) {
           flagValues[camelCasedKey] = ldClient.variation(flag, flags[flag]);
         }
 
@@ -58,9 +53,7 @@ export default flags => (WrappedComponent) => {
         });
       }
 
-      if (!flagsInitialised) {
-        dispatch(setFlags(flagValues));
-      }
+      dispatch(setFlags(flagValues));
     }
 
     render() {
