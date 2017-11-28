@@ -42,7 +42,7 @@ export default flags => (WrappedComponent) => {
         const camelCasedKey = camelCase(flag);
 
         if (!featureFlags[camelCasedKey]) {
-            flagValues[camelCasedKey] = ldClient.variation(flag, flags[flag]);
+          flagValues[camelCasedKey] = ldClient.variation(flag, flags[flag]);
         }
 
         ldClient.on(`change:${flag}`, (current) => {
