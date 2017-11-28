@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import camelCase from 'lodash/camelCase';
 import {setFlags} from './actions';
 
-export default (flags) => (WrappedComponent) => {
+export default flags => (WrappedComponent) => {
   class WithFeatureFlags extends Component {
     // Need the store through context to call dispatch
     // https://github.com/reactjs/redux/issues/362
@@ -36,7 +36,7 @@ export default (flags) => (WrappedComponent) => {
       const {dispatch, getState} = this.context.store;
       const flagValues = {};
       const {LD} = getState();
-      const {isLDReady, ...featureFlags} = LD;
+      const {isLDReady, ...featureFlags} = LD; //eslint-disable-line no-unused-vars
 
       for (const flag in flags) {
         const camelCasedKey = camelCase(flag);
