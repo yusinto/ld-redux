@@ -36,12 +36,12 @@ export default flags => (WrappedComponent) => {
       const {dispatch, getState} = this.context.store;
       const flagValues = {};
       const {LD} = getState();
-      const {isLDReady, ...featureFlags} = LD; //eslint-disable-line no-unused-vars
+      const {isLDReady, ...currentlySetFlags} = LD; //eslint-disable-line no-unused-vars
 
       for (const flag in flags) {
         const camelCasedKey = camelCase(flag);
 
-        if (!featureFlags[camelCasedKey]) {
+        if (!currentlySetFlags[camelCasedKey]) {
           flagValues[camelCasedKey] = ldClient.variation(flag, flags[flag]);
         }
 
