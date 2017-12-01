@@ -12,7 +12,12 @@ export default flags => (WrappedComponent) => {
     };
 
     static propTypes = {
-      isLDReady: PropTypes.bool,
+      isLDReadyClient: PropTypes.bool,
+      isLDReadyServer: PropTypes.bool,
+    };
+
+    state = {
+      featureFlagOnChangeInitialised: false,
     };
 
     constructor(props) {
@@ -21,36 +26,46 @@ export default flags => (WrappedComponent) => {
     }
 
     componentDidMount() {
-      if (this.props.isLDReady) {
+      if (this.props.isLDReadyClient || this.props.isLDReadyServer) {
         this.initialise();
       }
     }
 
     componentWillReceiveProps(newProps) {
-      if (newProps.isLDReady && !this.props.isLDReady) {
+      if ((newProps.isLDReadyClient && !this.props.isLDReadyClient) ||
+          (newProps.isLDReadyServer && !this.props.isLDReadyServer)
+      ) {
         this.initialise();
       }
     }
 
     initialise() {
       const {dispatch, getState} = this.context.store;
+      const {featureFlagOnChangeInitialised} = this.state;
       const flagValues = {};
       const {LD} = getState();
-      const {isLDReady, ...currentlySetFlags} = LD; //eslint-disable-line no-unused-vars
+      const {isLDReadyClient, isLDReadyServer} = LD; //eslint-disable-line no-unused-vars
 
       for (const flag in flags) {
         const camelCasedKey = camelCase(flag);
 
-        if (!currentlySetFlags[camelCasedKey]) {
-          flagValues[camelCasedKey] = ldClient.variation(flag, flags[flag]);
+        // When ld client becomes ready, request the flags from the client side.
+        // These should override any flags hydrated from the server side.
+        // The reason why override the server flags is because they may be
+        // outdated due to caching (on CDN or server).
+        if (isLDReadyClient) {
+            flagValues[camelCasedKey] = ldClient.variation(flag, flags[flag]);
         }
 
-        ldClient.on(`change:${flag}`, (current) => {
-          const newFlagValues = {};
-          newFlagValues[camelCasedKey] = current;
+        // We don't set the on change handler more than once.
+        if(!featureFlagOnChangeInitialised) {
+          ldClient.on(`change:${flag}`, (current) => {
+              const newFlagValues = {};
+              newFlagValues[camelCasedKey] = current;
 
-          dispatch(setFlags(newFlagValues));
-        });
+              dispatch(setFlags(newFlagValues));
+          });
+        }
       }
 
       dispatch(setFlags(flagValues));

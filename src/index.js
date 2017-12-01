@@ -16,7 +16,7 @@ const getFlags = (state, flags) => {
   }
 
   return {
-    isLDReady: ldState.isLDReady,
+    isLDReadyClient: ldState.isLDReadyClient,
     ...c,
   };
 };
