@@ -44,7 +44,7 @@ export default flags => (WrappedComponent) => {
       const {featureFlagOnChangeInitialised} = this.state;
       const flagValues = {};
       const {LD} = getState();
-      const {isLDReadyClient, isLDReadyServer} = LD; //eslint-disable-line no-unused-vars
+      const {isLDReadyClient} = LD; //eslint-disable-line no-unused-vars
 
       for (const flag in flags) {
         const camelCasedKey = camelCase(flag);
