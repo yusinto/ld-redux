@@ -59,6 +59,10 @@ export default flags => (WrappedComponent) => {
 
         // We don't set the on change handler more than once.
         if(!featureFlagOnChangeInitialised) {
+          this.setState({
+            featureFlagOnChangeInitialised: true,
+          });
+
           ldClient.on(`change:${flag}`, (current) => {
               const newFlagValues = {};
               newFlagValues[camelCasedKey] = current;
