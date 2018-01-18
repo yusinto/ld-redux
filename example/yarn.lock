@@ -800,7 +800,7 @@ babel-register@^6.26.0, babel-register@^6.7.2:
     mkdirp "^0.5.1"
     source-map-support "^0.4.15"
 
-babel-runtime@^6.11.6, babel-runtime@^6.18.0, babel-runtime@^6.2.0, babel-runtime@^6.22.0, babel-runtime@^6.26.0:
+babel-runtime@^6.18.0, babel-runtime@^6.2.0, babel-runtime@^6.22.0, babel-runtime@^6.26.0:
   version "6.26.0"
   resolved "https://registry.yarnpkg.com/babel-runtime/-/babel-runtime-6.26.0.tgz#965c7058668e82b55d7bfe04ff2337bc8b5647fe"
   dependencies:
@@ -1947,16 +1947,13 @@ lcid@^1.0.0:
   dependencies:
     invert-kv "^1.0.0"
 
-ld-redux@^1.4.4:
-  version "1.4.5"
-  resolved "https://registry.yarnpkg.com/ld-redux/-/ld-redux-1.4.5.tgz#76038111895a5b7af80a5fa608eafac9b88ad1e3"
+ld-redux@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/ld-redux/-/ld-redux-3.0.0.tgz#2b36745b4a59ebb522fd1b3989ba2796c7a36700"
   dependencies:
-    babel-runtime "^6.11.6"
     ip "^1.1.3"
-    keymirror "^0.1.1"
     ldclient-js "^1.1.2"
     lodash "^4.16.3"
-    prop-types "^15.5.10"
     ua-parser-js "^0.7.10"
     uuid "^3.0.1"
 

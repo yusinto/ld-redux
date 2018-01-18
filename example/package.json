@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node src/server/index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "webpack --config webpack.config.dev.js"
+    "build": "webpack --config webpack.config.dev.js",
+    "prep-publish": "npm version patch -m 'Upgrade to %s' && npm publish && git push"
   },
   "repository": {
     "type": "git",
