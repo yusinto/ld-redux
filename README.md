@@ -63,9 +63,10 @@ yarn add ld-redux
     });
     ```
 
-3. Map state to props:
+3. Use the flag:
 
     ```javascript
+    import React, {Component} from 'react';
     import {connect} from 'react-redux';
 
     const mapStateToProps = (state) => {
@@ -77,24 +78,12 @@ yarn add ld-redux
     };
 
     @connect(mapStateToProps)
-    export default class HomeContainer extends Component {
-      render() {
-        return <HomeComponent {...this.props} />;
-      }
-    };
-    ```
-
-4. Finally in your component, your feature flags are available from props:
-
-    ```javascript
-    import React, {Component} from 'react';
-
     export default class Home extends Component {
       render() {
         return (
           <div>
             {
-              /* featureFlagKey is camelCased & injected by ld-redux */
+              /* look ma, feature flag! */
               this.props.featureFlagKey ?
                 <div>
                   <p>Welcome to feature toggling!</p>
