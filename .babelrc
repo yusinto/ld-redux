@@ -1,4 +1,7 @@
 {
-  "presets": [["es2015", { "modules": "umd" }], "react", "stage-0"],
-  "plugins": ["transform-runtime"]
+  "presets": [
+    "env",
+    "react",
+    "stage-0"
+  ]
 }
