@@ -1,5 +1,5 @@
-var webpack = require('webpack');
-var path = require('path');
+const webpack = require('webpack');
+const path = require('path');
 
 module.exports = {
   devtool: 'source-map',
@@ -11,13 +11,13 @@ module.exports = {
 
     // Add a publicPath property. This is the path referenced in the script tag in our html template to our bundle.js.
     // We need this to configure webpack-dev-middleware in server.js
-    publicPath: '/dist/'
+    publicPath: '/dist/',
   },
   module: {
     loaders: [
       {
         test: /\.json$/,
-        loader: "json-loader"
+        loader: 'json-loader',
       },
       {
         test: /\.jsx?$/,
@@ -26,20 +26,20 @@ module.exports = {
         query: {
           // Ripped from: https://github.com/gaearon/babel-plugin-react-transform
           plugins: [
-            ["react-transform", {
-              "transforms": [{
-                "transform": "react-transform-hmr",
-                "imports": ["react"],
-                "locals": ["module"]
+            ['react-transform', {
+              transforms: [{
+                transform: 'react-transform-hmr',
+                imports: ['react'],
+                locals: ['module'],
               }, {
                 // you can have many transforms, not just one
-                "transform": "react-transform-catch-errors",
-                "imports": ["react", "redbox-react"]
-              }]
-            }]
-          ]
-        }
-      }]
+                transform: 'react-transform-catch-errors',
+                imports: ['react', 'redbox-react'],
+              }],
+            }],
+          ],
+        },
+      }],
   },
 
   // Enables hot module replacement in webpack

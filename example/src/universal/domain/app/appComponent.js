@@ -11,13 +11,6 @@ const App = ({location: {pathname}, children}) => {
               <span>Home</span> : <Link to="/">Home</Link>
           }
         </span>
-      {' '} | {' '}
-        <span>
-          {
-            pathname === '/contact' ?
-              <span>Contact Us</span> : <Link to="/contact">Contact Us</Link>
-          }
-        </span>
       <div>
         <br/>
         {children}
