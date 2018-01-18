@@ -10,32 +10,32 @@ const isMobileDevice = typeof window !== 'undefined' && userAgentParser.getDevic
 const isTabletDevice = typeof window !== 'undefined' && userAgentParser.getDevice().type === 'tablet';
 
 // initialise flags with default values in ld redux store
-const initFlags = (flags, reduxStore) => {
+const initFlags = (flags, store) => {
   const flagValues = {};
   for (const flag in flags) {
     const camelCasedKey = camelCase(flag);
     flagValues[camelCasedKey] = flags[flag];
   }
-  reduxStore.dispatch(setFlagsAction(flagValues));
+  store.dispatch(setFlagsAction(flagValues));
 };
 
 // set flags with real values from ld server
-const setFlags = (flags, reduxStore) => {
+const setFlags = (flags, store) => {
   const flagValues = {};
   for (const flag in flags) {
     const camelCasedKey = camelCase(flag);
     flagValues[camelCasedKey] = ldClient.variation(flag, flags[flag]);
   }
-  reduxStore.dispatch(setFlagsAction(flagValues));
+  store.dispatch(setFlagsAction(flagValues));
 };
 
-const subscribeToChanges = (flags, reduxStore) => {
+const subscribeToChanges = (flags, store) => {
   for (const flag in flags) {
     const camelCasedKey = camelCase(flag);
     ldClient.on(`change:${flag}`, (current) => {
       const newFlagValue = {};
       newFlagValue[camelCasedKey] = current;
-      reduxStore.dispatch(setFlagsAction(newFlagValue));
+      store.dispatch(setFlagsAction(newFlagValue));
     });
   }
 };
@@ -61,8 +61,8 @@ const initUser = () => {
   };
 };
 
-export default ({clientSideId, reduxStore, flags, user, options}) => {
-  initFlags(flags, reduxStore);
+export default ({clientSideId, store, flags, user, options}) => {
+  initFlags(flags, store);
 
   if (!user) {
     user = initUser();
@@ -70,7 +70,7 @@ export default ({clientSideId, reduxStore, flags, user, options}) => {
 
   window.ldClient = ldClientPackage.initialize(clientSideId, user, options);
   window.ldClient.on('ready', () => {
-    setFlags(flags, reduxStore);
-    subscribeToChanges(flags, reduxStore);
+    setFlags(flags, store);
+    subscribeToChanges(flags, store);
   });
 };

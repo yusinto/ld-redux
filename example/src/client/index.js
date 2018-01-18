@@ -8,16 +8,16 @@ import ldRedux from '../../../lib';
 import flags from '../../flags.json';
 
 const reduxState = window.__INITIAL_STATE__ || undefined;
-const reduxStore = createStore(reduxState);
+const store = createStore(reduxState);
 
 ldRedux.init({
   clientSideId: 'your-client-side-id',
-  reduxStore,
+  store,
   flags,
 });
 
 render(
-  <Provider store={reduxStore}>
+  <Provider store={store}>
     <Router routes={routes} history={browserHistory}/>
   </Provider>,
   document.getElementById('reactDiv')

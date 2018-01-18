@@ -4,11 +4,11 @@ import * as homeActions from './homeAction';
 
 const mapStateToProps = (state) => {
   const homeState = state.Home;
-  const {testCafeGodMode} = state.LD;
+  const {devTestFlag} = state.LD;
 
   return {
     ...homeState,
-    testCafeGodMode,
+    devTestFlag,
   };
 };
 
@@ -25,7 +25,7 @@ export default class Home extends Component {
           Welcome to ld-redux test app!
         </p>
         {
-          this.props.testCafeGodMode ?
+          this.props.devTestFlag ?
             <div>
               <p>
                 SSE works! If you turn off your flag in launch darkly, your app will respond without a browser refresh.

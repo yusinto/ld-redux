@@ -34,8 +34,14 @@
     "guard-for-in": 0,
     "no-restricted-syntax": 0,
   },
+  "env": {
+    "jest": true,
+    "node": true
+  },
   "globals": {
-    "ldClient": true,
-    "window": true,
+    "ldClient",
+    "window",
+    "jest",
+    "td",
   },
 }
