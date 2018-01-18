@@ -151,4 +151,6 @@ For more info on changing user context, see the [official documentation](http://
 
 
 ## Example
-Check the [example](https://github.com/yusinto/ld-redux/tree/master/example) for a fully working spa with react, redux and react-router.
+Check the [example](https://github.com/yusinto/ld-redux/tree/master/example) for a fully working spa with 
+react, redux and react-router. Remember to enter your client side sdk in the client [bootstrap file](https://github.com/yusinto/ld-redux/blob/master/example/src/client/index.js) 
+before running the example!
