@@ -1948,8 +1948,8 @@ lcid@^1.0.0:
     invert-kv "^1.0.0"
 
 ld-redux@^3.0.0:
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/ld-redux/-/ld-redux-3.0.0.tgz#2b36745b4a59ebb522fd1b3989ba2796c7a36700"
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/ld-redux/-/ld-redux-3.0.1.tgz#980fec482a268024d7455eb4f967852e8438f4c2"
   dependencies:
     ip "^1.1.3"
     ldclient-js "^1.1.2"
