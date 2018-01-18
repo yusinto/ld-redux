@@ -13,8 +13,8 @@ If you use react redux and you want to store your feature flags as part of your 
  * Camel casing your keys so you can use them in code with the dot operator. The keys by default are dash separated so you can't do this out of the box with the [official sdk](https://github.com/launchdarkly/js-client).
  * Server Sent Event works as well so your app will respond live to feature flag changes without the users having to refresh the browser!
 
-## Breaking changes in v2
-ld-redux v2 is *NOT* backwards compatible! It has been re-written so the api is cleaner and much easier to use:
+## Breaking changes in v3
+ld-redux v3 is *NOT* backwards compatible! It has been re-written so the api is cleaner and much easier to use:
  * No more isLDReady (thank god)
  * No more ldConnect (yayy!)
  * One step initialisation
