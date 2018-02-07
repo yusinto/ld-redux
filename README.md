@@ -15,7 +15,7 @@ If you use react redux and you want to store your feature flags as part of your 
 
 ## Breaking changes in v3
 ld-redux v3 is *NOT* backwards compatible! It has been re-written so the api is cleaner and much easier to use:
- * No more isLDReady (thank god)
+ * isLDReady no longer required (thank god)
  * No more ldConnect (yayy!)
  * One step initialisation
 
@@ -149,6 +149,22 @@ window.ldClient.identify({key: 'someUserId'});
 
 For more info on changing user context, see the [official documentation](http://docs.launchdarkly.com/docs/js-sdk-reference#section-changing-the-user-context).
 
+### isLDReady
+You no longer need to deal with `isLDReady`. However if you need to, it is still available in the store. You can access it via
+the LD state like so:
+
+```javascript
+const mapStateToProps = (state) => {
+  const {isLDReady} = state.LD; // Note: the key LD must be the same as step 2.
+
+  return {
+    isLDReady,
+  };
+};
+```
+
+This is useful to solve "flickering" issues above the fold on your front page caused by a flag transitioning from a default false value
+to true.
 
 ## Example
 Check the [example](https://github.com/yusinto/ld-redux/tree/master/example) for a fully working spa with 

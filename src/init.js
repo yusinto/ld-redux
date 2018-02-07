@@ -11,7 +11,7 @@ const isTabletDevice = typeof window !== 'undefined' && userAgentParser.getDevic
 
 // initialise flags with default values in ld redux store
 const initFlags = (flags, store) => {
-  const flagValues = {};
+  const flagValues = {isLDReady: false};
   for (const flag in flags) {
     const camelCasedKey = camelCase(flag);
     flagValues[camelCasedKey] = flags[flag];
@@ -21,7 +21,7 @@ const initFlags = (flags, store) => {
 
 // set flags with real values from ld server
 const setFlags = (flags, store) => {
-  const flagValues = {};
+  const flagValues = {isLDReady: true};
   for (const flag in flags) {
     const camelCasedKey = camelCase(flag);
     flagValues[camelCasedKey] = ldClient.variation(flag, flags[flag]);

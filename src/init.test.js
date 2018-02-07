@@ -48,7 +48,7 @@ describe('initialize', () => {
 
     td.verify(mock.store.dispatch(td.matchers.contains({
       type: 'SET_FLAGS',
-      data: {testFlag: false, anotherTestFlag: true},
+      data: {isLDReady: false, testFlag: false, anotherTestFlag: true},
     })));
   });
 
@@ -107,11 +107,17 @@ describe('initialize', () => {
       flags: {'test-flag': false, 'another-test-flag': true},
     });
 
-    mock.onReadyHandler();
-
     td.verify(mock.store.dispatch(td.matchers.contains({
       type: 'SET_FLAGS',
-      data: {testFlag: true, anotherTestFlag: false},
+      data: {isLDReady: false, testFlag: false, anotherTestFlag: true},
+    })));
+
+    mock.onReadyHandler();
+
+    td.verify(mock.store.dispatch(td.matchers.anything()), {times: 2});
+    td.verify(mock.store.dispatch(td.matchers.contains({
+      type: 'SET_FLAGS',
+      data: {isLDReady: true, testFlag: true, anotherTestFlag: false},
     })));
   });
 
