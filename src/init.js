@@ -28,7 +28,7 @@ const setFlags = (flags, store) => {
   }
 
   // Wrapped dispatch in a setTimeout to prevent React client/server mismatches and the associated unexpected consequences
-  setTimeout(() => { store.dispatch(setFlagsAction(flagValues)); });
+  setTimeout(() => store.dispatch(setFlagsAction(flagValues)));
 };
 
 const subscribeToChanges = (flags, store) => {
