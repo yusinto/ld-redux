@@ -15,6 +15,8 @@ jest.mock('ua-parser-js', () => () => ({
   getDevice: () => ({type: 'desktop'}),
 }));
 
+jest.useFakeTimers();
+
 import ldClientPackage from 'ldclient-js';
 import td from 'testdouble';
 import ldReduxInit from './init';
@@ -114,6 +116,8 @@ describe('initialize', () => {
 
     mock.onReadyHandler();
 
+    jest.runAllTimers();
+
     td.verify(mock.store.dispatch(td.matchers.anything()), {times: 2});
     td.verify(mock.store.dispatch(td.matchers.contains({
       type: 'SET_FLAGS',
@@ -132,6 +136,8 @@ describe('initialize', () => {
     });
 
     mock.onReadyHandler();
+
+    jest.runAllTimers();
 
     td.verify(mock.store.dispatch(td.matchers.contains({
       type: 'SET_FLAGS',
