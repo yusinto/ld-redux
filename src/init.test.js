@@ -54,6 +54,27 @@ describe('initialize', () => {
     })));
   });
 
+  it('should initFlags with custom key-values and save to redux store', () => {
+    ldReduxInit({
+      clientSideId: MOCK_CLIENT_SIDE_ID,
+      store: mock.store,
+      flags: [{
+        key: 'test-flag',
+        default: false,
+        reduxKey: 'myKey1',
+      }, {
+        key: 'another-test-flag',
+        default: true,
+        reduxKey: 'myKey2',
+      }],
+    });
+
+    td.verify(mock.store.dispatch(td.matchers.contains({
+      type: 'SET_FLAGS',
+      data: {isLDReady: false, myKey1: false, myKey2: true},
+    })));
+  });
+
   it('should initUser with default user if none is specified', () => {
     const defaultUser = {
       key: 'some-unique-guid',
@@ -125,6 +146,40 @@ describe('initialize', () => {
     })));
   });
 
+  it('should set custom key-value flag values once ready', () => {
+    td.when(mock.variation('test-flag', false)).thenReturn(true);
+    td.when(mock.variation('another-test-flag', true)).thenReturn(false);
+
+    ldReduxInit({
+      clientSideId: MOCK_CLIENT_SIDE_ID,
+      store: mock.store,
+      flags: [{
+        key: 'test-flag',
+        default: false,
+        reduxKey: 'myKey1',
+      }, {
+        key: 'another-test-flag',
+        default: true,
+        reduxKey: 'myKey2',
+      }],
+    });
+
+    td.verify(mock.store.dispatch(td.matchers.contains({
+      type: 'SET_FLAGS',
+      data: {isLDReady: false, myKey1: false, myKey2: true},
+    })));
+
+    mock.onReadyHandler();
+
+    jest.runAllTimers();
+
+    td.verify(mock.store.dispatch(td.matchers.anything()), {times: 2});
+    td.verify(mock.store.dispatch(td.matchers.contains({
+      type: 'SET_FLAGS',
+      data: {isLDReady: true, myKey1: true, myKey2: false},
+    })));
+  });
+
   it('should subscribe to flag changes once ready', () => {
     td.when(mock.on('change:test-flag', td.matchers.isA(Function))).thenDo((e, f) => f(true));
     td.when(mock.on('change:another-test-flag', td.matchers.isA(Function))).thenDo((e, f) => f(false));
@@ -146,6 +201,39 @@ describe('initialize', () => {
     td.verify(mock.store.dispatch(td.matchers.contains({
       type: 'SET_FLAGS',
       data: {anotherTestFlag: false},
+    })));
+    td.verify(mock.store.dispatch(td.matchers.anything()), {times: 4});
+  });
+
+  it('should subscribe to custom key-value flag changes once ready', () => {
+    td.when(mock.on('change:test-flag', td.matchers.isA(Function))).thenDo((e, f) => f(true));
+    td.when(mock.on('change:another-test-flag', td.matchers.isA(Function))).thenDo((e, f) => f(false));
+
+    ldReduxInit({
+      clientSideId: MOCK_CLIENT_SIDE_ID,
+      store: mock.store,
+      flags: [{
+        key: 'test-flag',
+        default: false,
+        reduxKey: 'myKey1',
+      }, {
+        key: 'another-test-flag',
+        default: true,
+        reduxKey: 'myKey2',
+      }],
+    });
+
+    mock.onReadyHandler();
+
+    jest.runAllTimers();
+
+    td.verify(mock.store.dispatch(td.matchers.contains({
+      type: 'SET_FLAGS',
+      data: {myKey1: true},
+    })));
+    td.verify(mock.store.dispatch(td.matchers.contains({
+      type: 'SET_FLAGS',
+      data: {myKey2: false},
     })));
     td.verify(mock.store.dispatch(td.matchers.anything()), {times: 4});
   });
