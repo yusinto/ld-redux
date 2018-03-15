@@ -26,9 +26,7 @@ const setFlags = (flags, store) => {
     const camelCasedKey = camelCase(flag);
     flagValues[camelCasedKey] = ldClient.variation(flag, flags[flag]);
   }
-
-  // Wrapped dispatch in a setTimeout to prevent React client/server mismatches and the associated unexpected consequences
-  setTimeout(() => store.dispatch(setFlagsAction(flagValues)));
+  store.dispatch(setFlagsAction(flagValues));
 };
 
 const subscribeToChanges = (flags, store) => {
