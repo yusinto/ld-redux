@@ -44,7 +44,7 @@ describe('initialize', () => {
   it('should initFlags with default values and save to redux store', () => {
     ldReduxInit({
       clientSideId: MOCK_CLIENT_SIDE_ID,
-      store: mock.store,
+      dispatch: mock.store.dispatch,
       flags: {'test-flag': false, 'another-test-flag': true},
     });
 
@@ -66,7 +66,7 @@ describe('initialize', () => {
 
     ldReduxInit({
       clientSideId: MOCK_CLIENT_SIDE_ID,
-      store: mock.store,
+      dispatch: mock.store.dispatch,
       flags: {'test-flag': false, 'another-test-flag': true},
     });
 
@@ -78,7 +78,7 @@ describe('initialize', () => {
 
     ldReduxInit({
       clientSideId: MOCK_CLIENT_SIDE_ID,
-      store: mock.store,
+      dispatch: mock.store.dispatch,
       flags: {'test-flag': false, 'another-test-flag': true},
       user,
     });
@@ -90,7 +90,7 @@ describe('initialize', () => {
     const options = {bootstrap: 'localStorage'};
     ldReduxInit({
       clientSideId: MOCK_CLIENT_SIDE_ID,
-      store: mock.store,
+      dispatch: mock.store.dispatch,
       flags: {'test-flag': false, 'another-test-flag': true},
       options,
     });
@@ -105,7 +105,7 @@ describe('initialize', () => {
 
     ldReduxInit({
       clientSideId: MOCK_CLIENT_SIDE_ID,
-      store: mock.store,
+      dispatch: mock.store.dispatch,
       flags: {'test-flag': false, 'another-test-flag': true},
     });
 
@@ -131,7 +131,7 @@ describe('initialize', () => {
 
     ldReduxInit({
       clientSideId: MOCK_CLIENT_SIDE_ID,
-      store: mock.store,
+      dispatch: mock.store.dispatch,
       flags: {'test-flag': false, 'another-test-flag': true},
     });
 

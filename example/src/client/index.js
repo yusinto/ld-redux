@@ -12,7 +12,7 @@ const store = createStore(reduxState);
 
 ldRedux.init({
   clientSideId: 'your-client-side-id',
-  store,
+  dispatch: store.dispatch,
   flags,
 });
 
