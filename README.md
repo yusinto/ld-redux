@@ -38,7 +38,7 @@ yarn add ld-redux
     // do this once
     ldRedux.init({
       clientSideId: 'your-client-side-id',
-      store,
+      dispatch: store.dispatch,
       flags,
     });
 
@@ -98,8 +98,8 @@ yarn add ld-redux
     ```
 
 ## API
-### init({clientSideId, store, flags, user, options})
-The init method accepts an object with the above properties. `clientSideId`, `store` and `flags` are mandatory.
+### init({clientSideId, dispatch, flags, user, options})
+The init method accepts an object with the above properties. `clientSideId`, `dispatch` and `flags` are mandatory.
 
 The `user` property is optional. You can initialise the sdk with a custom user by specifying one. This must be an object containing
 at least a "key" property. If you don't specify a user object, ldRedux will create a default one that looks like this:
@@ -123,7 +123,7 @@ For example:
 ```javascript
 ldRedux.init({
     clientSideId,
-    store,
+    dispatch,
     flags,
     options: {
       bootstrap: 'localStorage',

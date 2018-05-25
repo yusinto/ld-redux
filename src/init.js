@@ -10,32 +10,32 @@ const isMobileDevice = typeof window !== 'undefined' && userAgentParser.getDevic
 const isTabletDevice = typeof window !== 'undefined' && userAgentParser.getDevice().type === 'tablet';
 
 // initialise flags with default values in ld redux store
-const initFlags = (flags, store) => {
+const initFlags = (flags, dispatch) => {
   const flagValues = {isLDReady: false};
   for (const flag in flags) {
     const camelCasedKey = camelCase(flag);
     flagValues[camelCasedKey] = flags[flag];
   }
-  store.dispatch(setFlagsAction(flagValues));
+  dispatch(setFlagsAction(flagValues));
 };
 
 // set flags with real values from ld server
-const setFlags = (flags, store) => {
+const setFlags = (flags, dispatch) => {
   const flagValues = {isLDReady: true};
   for (const flag in flags) {
     const camelCasedKey = camelCase(flag);
     flagValues[camelCasedKey] = ldClient.variation(flag, flags[flag]);
   }
-  store.dispatch(setFlagsAction(flagValues));
+  dispatch(setFlagsAction(flagValues));
 };
 
-const subscribeToChanges = (flags, store) => {
+const subscribeToChanges = (flags, dispatch) => {
   for (const flag in flags) {
     const camelCasedKey = camelCase(flag);
     ldClient.on(`change:${flag}`, (current) => {
       const newFlagValue = {};
       newFlagValue[camelCasedKey] = current;
-      store.dispatch(setFlagsAction(newFlagValue));
+      dispatch(setFlagsAction(newFlagValue));
     });
   }
 };
@@ -61,8 +61,8 @@ const initUser = () => {
   };
 };
 
-export default ({clientSideId, store, flags, user, options}) => {
-  initFlags(flags, store);
+export default ({clientSideId, dispatch, flags, user, options}) => {
+  initFlags(flags, dispatch);
 
   if (!user) {
     user = initUser();
@@ -70,7 +70,7 @@ export default ({clientSideId, store, flags, user, options}) => {
 
   window.ldClient = ldClientPackage.initialize(clientSideId, user, options);
   window.ldClient.on('ready', () => {
-    setFlags(flags, store);
-    subscribeToChanges(flags, store);
+    setFlags(flags, dispatch);
+    subscribeToChanges(flags, dispatch);
   });
 };
