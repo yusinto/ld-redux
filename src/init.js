@@ -61,7 +61,7 @@ const initUser = () => {
   };
 };
 
-export default ({clientSideId, dispatch, flags, user, options}) => {
+export default ({clientSideId, dispatch, flags, user, options, settings}) => {
   initFlags(flags, dispatch);
 
   if (!user) {
@@ -70,6 +70,10 @@ export default ({clientSideId, dispatch, flags, user, options}) => {
 
   window.ldClient = ldClientPackage.initialize(clientSideId, user, options);
   window.ldClient.on('ready', () => {
+    if (settings && settings.allFlags) {
+      const allFlags = ldClient.allFlags();
+      flags = { ...flags, ...allFlags };
+    }
     setFlags(flags, dispatch);
     subscribeToChanges(flags, dispatch);
   });

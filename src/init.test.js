@@ -29,12 +29,14 @@ describe('initialize', () => {
     mock.store = td.object(['dispatch']);
     mock.on = td.function('ldClient.on');
     mock.variation = td.function('ldClient.variation');
+    mock.allFlags = td.function('ldClient.allFlags');
 
     td.when(ldClientPackage.initialize(MOCK_CLIENT_SIDE_ID, td.matchers.anything(), td.matchers.anything()))
-      .thenReturn({on: mock.on, variation: mock.variation});
+      .thenReturn({on: mock.on, variation: mock.variation, allFlags: mock.allFlags});
     td.when(mock.on('ready', td.matchers.isA(Function))).thenDo((s, f) => {
       mock.onReadyHandler = f;
     });
+    td.when(mock.allFlags()).thenReturn({'all-test-flag': true});
   });
 
   afterEach(() => {
@@ -148,5 +150,48 @@ describe('initialize', () => {
       data: {anotherTestFlag: false},
     })));
     td.verify(mock.store.dispatch(td.matchers.anything()), {times: 4});
+  });
+
+  it('should get all flags with allFlags setting set', () => {
+    td.when(mock.variation('test-flag', false)).thenReturn(true);
+    td.when(mock.variation('another-test-flag', true)).thenReturn(false);
+    td.when(mock.variation('all-test-flag', true)).thenReturn(true);
+    const settings = {allFlags: true};
+    ldReduxInit({
+      clientSideId: MOCK_CLIENT_SIDE_ID,
+      dispatch: mock.store.dispatch,
+      flags: {'test-flag': false, 'another-test-flag': true},
+      settings,
+    });
+
+    mock.onReadyHandler();
+
+    jest.runAllTimers();
+
+    td.verify(mock.store.dispatch(td.matchers.anything()), {times: 2});
+    td.verify(mock.store.dispatch(td.matchers.contains({
+      type: 'SET_FLAGS',
+      data: {isLDReady: true, testFlag: true, anotherTestFlag: false, allTestFlag: true},
+    })));
+  });
+
+  it('should not require flags if allFlags setting is set', () => {
+    td.when(mock.variation('all-test-flag', true)).thenReturn(true);
+    const settings = {allFlags: true};
+    ldReduxInit({
+      clientSideId: MOCK_CLIENT_SIDE_ID,
+      dispatch: mock.store.dispatch,
+      settings,
+    });
+
+    mock.onReadyHandler();
+
+    jest.runAllTimers();
+
+    td.verify(mock.store.dispatch(td.matchers.anything()), {times: 2});
+    td.verify(mock.store.dispatch(td.matchers.contains({
+      type: 'SET_FLAGS',
+      data: {isLDReady: true, allTestFlag: true},
+    })));
   });
 });
