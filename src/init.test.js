@@ -174,4 +174,24 @@ describe('initialize', () => {
       data: {isLDReady: true, testFlag: true, anotherTestFlag: false, allTestFlag: true},
     })));
   });
+
+  it('should not require flags if allFlags is set', () => {
+    td.when(mock.variation('all-test-flag', true)).thenReturn(true);
+    const options = {allFlags: true};
+    ldReduxInit({
+      clientSideId: MOCK_CLIENT_SIDE_ID,
+      dispatch: mock.store.dispatch,
+      options,
+    });
+
+    mock.onReadyHandler();
+
+    jest.runAllTimers();
+
+    td.verify(mock.store.dispatch(td.matchers.anything()), {times: 2});
+    td.verify(mock.store.dispatch(td.matchers.contains({
+      type: 'SET_FLAGS',
+      data: {isLDReady: true, allTestFlag: true},
+    })));
+  });
 });
