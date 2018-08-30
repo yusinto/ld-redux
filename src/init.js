@@ -40,13 +40,6 @@ const subscribeToChanges = (flags, dispatch) => {
   }
 };
 
-const orderByKey = (flags) => {
-  const ordered = {};
-  Object.keys(flags).sort().forEach((key) => {
-    ordered[key] = flags[key];
-  });
-};
-
 const initUser = () => {
   let device;
 
@@ -81,7 +74,6 @@ export default ({clientSideId, dispatch, flags, user, options}) => {
       const allFlags = ldClient.allFlags();
       flags = { ...flags, ...allFlags };
     }
-    flags = orderByKey(flags);
     setFlags(flags, dispatch);
     subscribeToChanges(flags, dispatch);
   });
