@@ -152,16 +152,16 @@ describe('initialize', () => {
     td.verify(mock.store.dispatch(td.matchers.anything()), {times: 4});
   });
 
-  it('should get all flags with allFlags option set', () => {
+  it('should get all flags with allFlags setting set', () => {
     td.when(mock.variation('test-flag', false)).thenReturn(true);
     td.when(mock.variation('another-test-flag', true)).thenReturn(false);
     td.when(mock.variation('all-test-flag', true)).thenReturn(true);
-    const options = {allFlags: true};
+    const settings = {allFlags: true};
     ldReduxInit({
       clientSideId: MOCK_CLIENT_SIDE_ID,
       dispatch: mock.store.dispatch,
       flags: {'test-flag': false, 'another-test-flag': true},
-      options,
+      settings,
     });
 
     mock.onReadyHandler();
@@ -175,13 +175,13 @@ describe('initialize', () => {
     })));
   });
 
-  it('should not require flags if allFlags is set', () => {
+  it('should not require flags if allFlags setting is set', () => {
     td.when(mock.variation('all-test-flag', true)).thenReturn(true);
-    const options = {allFlags: true};
+    const settings = {allFlags: true};
     ldReduxInit({
       clientSideId: MOCK_CLIENT_SIDE_ID,
       dispatch: mock.store.dispatch,
-      options,
+      settings,
     });
 
     mock.onReadyHandler();
