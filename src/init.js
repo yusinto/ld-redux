@@ -70,7 +70,8 @@ export default ({clientSideId, dispatch, flags, user, options}) => {
 
   window.ldClient = ldClientPackage.initialize(clientSideId, user, options);
   window.ldClient.on('ready', () => {
-    setFlags(flags, dispatch);
-    subscribeToChanges(flags, dispatch);
+    const flagsSanitised = flags || ldClient.allFlags();
+    setFlags(flagsSanitised, dispatch);
+    subscribeToChanges(flagsSanitised, dispatch);
   });
 };

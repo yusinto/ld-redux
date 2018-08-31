@@ -31,13 +31,11 @@ yarn add ld-redux
 
     // standard redux createStore
     const store = createStore();
-    const flags = { 'feature-flag-key': false };
 
     // do this once
     ldRedux.init({
       clientSideId: 'your-client-side-id',
       dispatch: store.dispatch,
-      flags,
     });
 
     render(
@@ -97,7 +95,23 @@ yarn add ld-redux
 
 ## API
 ### init({clientSideId, dispatch, flags, user, options})
-The init method accepts an object with the above properties. `clientSideId`, `dispatch` and `flags` are mandatory.
+The init method accepts an object with the above properties. `clientSideId`, `dispatch` are mandatory.
+
+The `flags` property is optional. This is an object containing all the flags you want to use and subscribe to in your app.
+If you don't specify this, ld-redux will subscribe to all flags in your ld environment.
+
+```javascript
+// standard redux createStore
+const store = createStore();
+const flags = { 'feature-flag-key': false }; // only subscribe to  this one flag
+
+// do this once
+ldRedux.init({
+  clientSideId: 'your-client-side-id',
+  dispatch: store.dispatch,
+  flags,
+});
+```
 
 The `user` property is optional. You can initialise the sdk with a custom user by specifying one. This must be an object containing
 at least a "key" property. If you don't specify a user object, ldRedux will create a default one that looks like this:
