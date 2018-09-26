@@ -5,6 +5,7 @@
     "babel"
   ],
   "rules": {
+    "import/first": 0,
     "eol-last": 0,
     "arrow-body-style": 0,
     "consistent-return": 0,
@@ -33,6 +34,7 @@
     "no-use-before-define": 0,
     "guard-for-in": 0,
     "no-restricted-syntax": 0,
+    "object-curly-newline": 0
   },
   "env": {
     "jest": true,

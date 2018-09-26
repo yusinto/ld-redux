@@ -1,5 +1,5 @@
 import {initialize as ldClientInitialize} from 'ldclient-js';
-import camelCase from 'lodash.camelCase';
+import camelCase from 'lodash.camelcase';
 import uuid from 'uuid';
 import ip from 'ip';
 import UAParser from 'ua-parser-js';
