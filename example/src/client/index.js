@@ -1,5 +1,5 @@
 import React from 'react';
-import {render} from 'react-dom';
+import {hydrate} from 'react-dom';
 import {Router, browserHistory} from 'react-router';
 import routes from '../universal/routes';
 import {Provider} from 'react-redux';
@@ -11,12 +11,12 @@ const reduxState = window.__INITIAL_STATE__ || undefined;
 const store = createStore(reduxState);
 
 ldRedux.init({
-  clientSideId: 'your-client-side-id',
+  clientSideId: '57df4354dd79c70721bcb507',
   dispatch: store.dispatch,
   flags,
 });
 
-render(
+hydrate(
   <Provider store={store}>
     <Router routes={routes} history={browserHistory}/>
   </Provider>,

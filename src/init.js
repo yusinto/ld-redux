@@ -1,5 +1,5 @@
-import ldClientPackage from 'ldclient-js';
-import camelCase from 'lodash/camelCase';
+import {initialize as ldClientInitialize} from 'ldclient-js';
+import camelCase from 'lodash.camelCase';
 import uuid from 'uuid';
 import ip from 'ip';
 import UAParser from 'ua-parser-js';
@@ -68,7 +68,7 @@ export default ({clientSideId, dispatch, flags, user, options}) => {
     user = initUser();
   }
 
-  window.ldClient = ldClientPackage.initialize(clientSideId, user, options);
+  window.ldClient = ldClientInitialize(clientSideId, user, options);
   window.ldClient.on('ready', () => {
     const flagsSanitised = flags || ldClient.allFlags();
     setFlags(flagsSanitised, dispatch);
