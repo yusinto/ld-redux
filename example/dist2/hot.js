@@ -1,0 +1,1 @@
+export default () => 'this is hot3';

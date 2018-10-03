@@ -5,6 +5,9 @@ module.exports = {
   devtool: 'source-map',
   // Add webpack-hot-middleware/client to our bundle so our universal subscribes to update notifications from the server
   entry: ['webpack-hot-middleware/client', path.join(__dirname, 'src/client/index')],
+  externals: [
+    'hot',
+  ],
   output: {
     path: path.join(__dirname, 'dist'),
     filename: 'bundle.js',

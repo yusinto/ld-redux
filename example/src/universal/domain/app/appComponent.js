@@ -1,22 +1,21 @@
-import React from 'react';
-import {Link} from 'react-router';
+import React, {Component} from 'react';
+// import {Link} from 'react-router';
+// import Hot from 'hot';
 
-const App = ({location: {pathname}, children}) => {
-  return (
-    <div>
-      <h1>Launch Darkly ld-redux demo</h1>
-        <span>
-          {
-            pathname === '/' || pathname === '/home' ?
-              <span>Home</span> : <Link to="/">Home</Link>
-          }
-        </span>
+export default class App extends Component {
+  state = {};
+
+  componentDidMount() {
+    setTimeout(() => this.setState({Hot: window.hot}));
+  }
+  render() {
+    const {Hot} = this.state;
+    return (
       <div>
-        <br/>
-        {children}
+        {
+          Hot ? <Hot/> : 'nothing yet'
+        }
       </div>
-    </div>
-  );
-};
-
-export default App;
+    );
+  }
+}
