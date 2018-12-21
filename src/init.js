@@ -61,7 +61,7 @@ const initUser = () => {
   };
 };
 
-export default ({clientSideId, dispatch, flags, user, options}) => {
+export default ({clientSideId, dispatch, flags, user, subscribe = true, options}) => {
   initFlags(flags, dispatch);
 
   if (!user) {
@@ -72,6 +72,9 @@ export default ({clientSideId, dispatch, flags, user, options}) => {
   window.ldClient.on('ready', () => {
     const flagsSanitised = flags || ldClient.allFlags();
     setFlags(flagsSanitised, dispatch);
-    subscribeToChanges(flagsSanitised, dispatch);
+
+    if (subscribe) {
+      subscribeToChanges(flagsSanitised, dispatch);
+    }
   });
 };
