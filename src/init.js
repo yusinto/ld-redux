@@ -1,9 +1,9 @@
-import {initialize as ldClientInitialize} from 'ldclient-js';
+import { initialize as ldClientInitialize } from 'ldclient-js';
 import camelCase from 'lodash.camelcase';
 import uuid from 'uuid';
 import ip from 'ip';
 import UAParser from 'ua-parser-js';
-import {setFlags as setFlagsAction} from './actions';
+import { setFlags as setFlagsAction } from './actions';
 
 const userAgentParser = new UAParser();
 const isMobileDevice = typeof window !== 'undefined' && userAgentParser.getDevice().type === 'mobile';
@@ -11,7 +11,7 @@ const isTabletDevice = typeof window !== 'undefined' && userAgentParser.getDevic
 
 // initialise flags with default values in ld redux store
 const initFlags = (flags, dispatch) => {
-  const flagValues = {isLDReady: false};
+  const flagValues = { isLDReady: false };
   for (const flag in flags) {
     const camelCasedKey = camelCase(flag);
     flagValues[camelCasedKey] = flags[flag];
@@ -21,7 +21,7 @@ const initFlags = (flags, dispatch) => {
 
 // set flags with real values from ld server
 const setFlags = (flags, dispatch) => {
-  const flagValues = {isLDReady: true};
+  const flagValues = { isLDReady: true };
   for (const flag in flags) {
     const camelCasedKey = camelCase(flag);
     flagValues[camelCasedKey] = ldClient.variation(flag, flags[flag]);
@@ -32,7 +32,7 @@ const setFlags = (flags, dispatch) => {
 const subscribeToChanges = (flags, dispatch) => {
   for (const flag in flags) {
     const camelCasedKey = camelCase(flag);
-    ldClient.on(`change:${flag}`, (current) => {
+    ldClient.on(`change:${flag}`, current => {
       const newFlagValue = {};
       newFlagValue[camelCasedKey] = current;
       dispatch(setFlagsAction(newFlagValue));
@@ -61,8 +61,11 @@ const initUser = () => {
   };
 };
 
-export default ({clientSideId, dispatch, flags, user, options}) => {
+export default ({ clientSideId, dispatch, flags, user, subscribe, options }) => {
   initFlags(flags, dispatch);
+
+  // default subscribe to true
+  const sanitisedSubscribe = typeof subscribe === 'undefined' ? true : subscribe;
 
   if (!user) {
     user = initUser();
@@ -72,6 +75,9 @@ export default ({clientSideId, dispatch, flags, user, options}) => {
   window.ldClient.on('ready', () => {
     const flagsSanitised = flags || ldClient.allFlags();
     setFlags(flagsSanitised, dispatch);
-    subscribeToChanges(flagsSanitised, dispatch);
+
+    if (sanitisedSubscribe) {
+      subscribeToChanges(flagsSanitised, dispatch);
+    }
   });
 };

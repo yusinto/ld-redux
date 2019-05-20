@@ -94,7 +94,7 @@ yarn add ld-redux
     ```
 
 ## API
-### init({clientSideId, dispatch, flags, user, options})
+### init({clientSideId, dispatch, flags, user, subscribe, options})
 The init method accepts an object with the above properties. `clientSideId`, `dispatch` are mandatory.
 
 The `flags` property is optional. This is an object containing all the flags you want to use and subscribe to in your app.
@@ -112,6 +112,10 @@ ldRedux.init({
   flags,
 });
 ```
+
+The `subscribe` property is optional. This defaults to true which means by default you'll get automatic live updates
+of flag changes from the server. You can turn this off and manually subscribe to flag changes through the ldClient
+object if for some reason you don't want to get live updates.
 
 The `user` property is optional. You can initialise the sdk with a custom user by specifying one. This must be an object containing
 at least a "key" property. If you don't specify a user object, ldRedux will create a default one that looks like this:

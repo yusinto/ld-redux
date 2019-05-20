@@ -11,8 +11,8 @@ jest.mock('ip', () => ({
 }));
 
 jest.mock('ua-parser-js', () => () => ({
-  getResult: () => ({browser: {name: 'waterfox'}}),
-  getDevice: () => ({type: 'desktop'}),
+  getResult: () => ({ browser: { name: 'waterfox' } }),
+  getDevice: () => ({ type: 'desktop' }),
 }));
 
 jest.useFakeTimers();
@@ -30,8 +30,9 @@ describe('initialize', () => {
     mock.on = td.function('ldClient.on');
     mock.variation = td.function('ldClient.variation');
 
-    td.when(ldClientPackage.initialize(MOCK_CLIENT_SIDE_ID, td.matchers.anything(), td.matchers.anything()))
-      .thenReturn({on: mock.on, variation: mock.variation});
+    td.when(ldClientPackage.initialize(MOCK_CLIENT_SIDE_ID, td.matchers.anything(), td.matchers.anything())).thenReturn(
+      { on: mock.on, variation: mock.variation },
+    );
     td.when(mock.on('ready', td.matchers.isA(Function))).thenDo((s, f) => {
       mock.onReadyHandler = f;
     });
@@ -45,13 +46,17 @@ describe('initialize', () => {
     ldReduxInit({
       clientSideId: MOCK_CLIENT_SIDE_ID,
       dispatch: mock.store.dispatch,
-      flags: {'test-flag': false, 'another-test-flag': true},
+      flags: { 'test-flag': false, 'another-test-flag': true },
     });
 
-    td.verify(mock.store.dispatch(td.matchers.contains({
-      type: 'SET_FLAGS',
-      data: {isLDReady: false, testFlag: false, anotherTestFlag: true},
-    })));
+    td.verify(
+      mock.store.dispatch(
+        td.matchers.contains({
+          type: 'SET_FLAGS',
+          data: { isLDReady: false, testFlag: false, anotherTestFlag: true },
+        }),
+      ),
+    );
   });
 
   it('should initUser with default user if none is specified', () => {
@@ -67,19 +72,21 @@ describe('initialize', () => {
     ldReduxInit({
       clientSideId: MOCK_CLIENT_SIDE_ID,
       dispatch: mock.store.dispatch,
-      flags: {'test-flag': false, 'another-test-flag': true},
+      flags: { 'test-flag': false, 'another-test-flag': true },
     });
 
-    td.verify(ldClientPackage.initialize(MOCK_CLIENT_SIDE_ID, td.matchers.contains(defaultUser), td.matchers.anything()));
+    td.verify(
+      ldClientPackage.initialize(MOCK_CLIENT_SIDE_ID, td.matchers.contains(defaultUser), td.matchers.anything()),
+    );
   });
 
   it('should initUser with custom user if it is specified', () => {
-    const user = {key: 'yus-the-man', firstName: 'yus', lastName: 'ng'};
+    const user = { key: 'yus-the-man', firstName: 'yus', lastName: 'ng' };
 
     ldReduxInit({
       clientSideId: MOCK_CLIENT_SIDE_ID,
       dispatch: mock.store.dispatch,
-      flags: {'test-flag': false, 'another-test-flag': true},
+      flags: { 'test-flag': false, 'another-test-flag': true },
       user,
     });
 
@@ -87,11 +94,11 @@ describe('initialize', () => {
   });
 
   it('should pass options through if specified', () => {
-    const options = {bootstrap: 'localStorage'};
+    const options = { bootstrap: 'localStorage' };
     ldReduxInit({
       clientSideId: MOCK_CLIENT_SIDE_ID,
       dispatch: mock.store.dispatch,
-      flags: {'test-flag': false, 'another-test-flag': true},
+      flags: { 'test-flag': false, 'another-test-flag': true },
       options,
     });
 
@@ -106,23 +113,31 @@ describe('initialize', () => {
     ldReduxInit({
       clientSideId: MOCK_CLIENT_SIDE_ID,
       dispatch: mock.store.dispatch,
-      flags: {'test-flag': false, 'another-test-flag': true},
+      flags: { 'test-flag': false, 'another-test-flag': true },
     });
 
-    td.verify(mock.store.dispatch(td.matchers.contains({
-      type: 'SET_FLAGS',
-      data: {isLDReady: false, testFlag: false, anotherTestFlag: true},
-    })));
+    td.verify(
+      mock.store.dispatch(
+        td.matchers.contains({
+          type: 'SET_FLAGS',
+          data: { isLDReady: false, testFlag: false, anotherTestFlag: true },
+        }),
+      ),
+    );
 
     mock.onReadyHandler();
 
     jest.runAllTimers();
 
-    td.verify(mock.store.dispatch(td.matchers.anything()), {times: 2});
-    td.verify(mock.store.dispatch(td.matchers.contains({
-      type: 'SET_FLAGS',
-      data: {isLDReady: true, testFlag: true, anotherTestFlag: false},
-    })));
+    td.verify(mock.store.dispatch(td.matchers.anything()), { times: 2 });
+    td.verify(
+      mock.store.dispatch(
+        td.matchers.contains({
+          type: 'SET_FLAGS',
+          data: { isLDReady: true, testFlag: true, anotherTestFlag: false },
+        }),
+      ),
+    );
   });
 
   it('should subscribe to flag changes once ready', () => {
@@ -132,21 +147,79 @@ describe('initialize', () => {
     ldReduxInit({
       clientSideId: MOCK_CLIENT_SIDE_ID,
       dispatch: mock.store.dispatch,
-      flags: {'test-flag': false, 'another-test-flag': true},
+      flags: { 'test-flag': false, 'another-test-flag': true },
     });
 
     mock.onReadyHandler();
 
     jest.runAllTimers();
 
-    td.verify(mock.store.dispatch(td.matchers.contains({
-      type: 'SET_FLAGS',
-      data: {testFlag: true},
-    })));
-    td.verify(mock.store.dispatch(td.matchers.contains({
-      type: 'SET_FLAGS',
-      data: {anotherTestFlag: false},
-    })));
-    td.verify(mock.store.dispatch(td.matchers.anything()), {times: 4});
+    td.verify(
+      mock.store.dispatch(
+        td.matchers.contains({
+          type: 'SET_FLAGS',
+          data: { testFlag: true },
+        }),
+      ),
+    );
+    td.verify(
+      mock.store.dispatch(
+        td.matchers.contains({
+          type: 'SET_FLAGS',
+          data: { anotherTestFlag: false },
+        }),
+      ),
+    );
+    td.verify(mock.store.dispatch(td.matchers.anything()), { times: 4 });
+  });
+
+  it('should not subscribe to flag changes if subscribe false', () => {
+    ldReduxInit({
+      clientSideId: MOCK_CLIENT_SIDE_ID,
+      dispatch: mock.store.dispatch,
+      flags: { 'test-flag': false, 'another-test-flag': true },
+      subscribe: false,
+    });
+
+    // initFlags
+    td.verify(
+      mock.store.dispatch(
+        td.matchers.contains({
+          type: 'SET_FLAGS',
+          data: { isLDReady: false, testFlag: false, anotherTestFlag: true },
+        }),
+      ),
+    );
+
+    mock.onReadyHandler();
+    jest.runAllTimers();
+
+    td.verify(mock.on('change:test-flag', td.matchers.isA(Function)), { times: 0 });
+    td.verify(mock.on('change:another-test-flag', td.matchers.isA(Function)), { times: 0 });
+  });
+
+  it('should subscribe to flag changes if subscribe is true', () => {
+    ldReduxInit({
+      clientSideId: MOCK_CLIENT_SIDE_ID,
+      dispatch: mock.store.dispatch,
+      flags: { 'test-flag': false, 'another-test-flag': true },
+      subscribe: true,
+    });
+
+    // initFlags
+    td.verify(
+      mock.store.dispatch(
+        td.matchers.contains({
+          type: 'SET_FLAGS',
+          data: { isLDReady: false, testFlag: false, anotherTestFlag: true },
+        }),
+      ),
+    );
+
+    mock.onReadyHandler();
+    jest.runAllTimers();
+
+    td.verify(mock.on('change:test-flag', td.matchers.isA(Function)));
+    td.verify(mock.on('change:another-test-flag', td.matchers.isA(Function)));
   });
 });

@@ -1,10 +1,12 @@
 {
   "parser": "babel-eslint",
-  "extends": "airbnb",
+  "extends": ["prettier"],
   "plugins": [
+    "prettier",
     "babel"
   ],
   "rules": {
+    "prettier/prettier": ["error"],
     "import/first": 0,
     "eol-last": 0,
     "arrow-body-style": 0,
