@@ -52,7 +52,7 @@
   },
   "dependencies": {
     "ip": "^1.1.5",
-    "ldclient-js": "^2.6.0",
+    "launchdarkly-js-client-sdk": "2.13.0",
     "lodash.camelcase": "^4.3.0",
     "ua-parser-js": "^0.7.18",
     "uuid": "^3.3.2"
