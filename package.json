@@ -1,6 +1,6 @@
 {
   "name": "ld-redux",
-  "version": "3.2.5",
+  "version": "3.3.0",
   "description": "A library to integrate launch darkly with react redux",
   "main": "lib/index.js",
   "scripts": {
@@ -52,7 +52,7 @@
   },
   "dependencies": {
     "ip": "^1.1.5",
-    "launchdarkly-js-client-sdk": "2.13.0",
+    "launchdarkly-js-client-sdk": "^2.13.0",
     "lodash.camelcase": "^4.3.0",
     "ua-parser-js": "^0.7.18",
     "uuid": "^3.3.2"
