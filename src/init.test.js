@@ -222,4 +222,39 @@ describe('initialize', () => {
     td.verify(mock.on('change:test-flag', td.matchers.isA(Function)));
     td.verify(mock.on('change:another-test-flag', td.matchers.isA(Function)));
   });
+
+  it('should not camel case provided flags if specified', () => {
+    td.when(mock.variation('test-flag', false)).thenReturn(true);
+    td.when(mock.variation('another-test-flag', true)).thenReturn(false);
+
+    ldReduxInit({
+      clientSideId: MOCK_CLIENT_SIDE_ID,
+      dispatch: mock.store.dispatch,
+      useCamelCaseFlagKeys: false,
+      flags: { 'test-flag': false, 'another-test-flag': true },
+    });
+
+    td.verify(
+      mock.store.dispatch(
+        td.matchers.contains({
+          type: 'SET_FLAGS',
+          data: { isLDReady: false, 'test-flag': false, 'another-test-flag': true },
+        }),
+      ),
+    );
+
+    mock.onReadyHandler();
+
+    jest.runAllTimers();
+
+    td.verify(mock.store.dispatch(td.matchers.anything()), { times: 2 });
+    td.verify(
+      mock.store.dispatch(
+        td.matchers.contains({
+          type: 'SET_FLAGS',
+          data: { isLDReady: false, 'test-flag': false, 'another-test-flag': true },
+        }),
+      ),
+    );
+  });
 });

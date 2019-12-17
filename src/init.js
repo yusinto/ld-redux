@@ -10,21 +10,25 @@ const isMobileDevice = typeof window !== 'undefined' && userAgentParser.getDevic
 const isTabletDevice = typeof window !== 'undefined' && userAgentParser.getDevice().type === 'tablet';
 
 // initialise flags with default values in ld redux store
-const initFlags = (flags, dispatch) => {
+const initFlags = (flags, dispatch, useCamelCaseFlagKeys) => {
   const flagValues = { isLDReady: false };
   for (const flag in flags) {
-    const camelCasedKey = camelCase(flag);
-    flagValues[camelCasedKey] = flags[flag];
+    if (useCamelCaseFlagKeys) {
+      const camelCasedKey = camelCase(flag);
+      flagValues[camelCasedKey] = flags[flag];
+    } else {
+      flagValues[flag] = flags[flag];
+    }
   }
   dispatch(setFlagsAction(flagValues));
 };
 
 // set flags with real values from ld server
-const setFlags = (flags, dispatch) => {
+const setFlags = (flags, dispatch, useCamelCaseFlagKeys) => {
   const flagValues = { isLDReady: true };
   for (const flag in flags) {
-    const camelCasedKey = camelCase(flag);
-    flagValues[camelCasedKey] = ldClient.variation(flag, flags[flag]);
+    const flagKey = useCamelCaseFlagKeys ? camelCase(flag) : flag;
+    flagValues[flagKey] = ldClient.variation(flag, flags[flag]);
   }
   dispatch(setFlagsAction(flagValues));
 };
@@ -61,8 +65,8 @@ const initUser = () => {
   };
 };
 
-export default ({ clientSideId, dispatch, flags, user, subscribe, options }) => {
-  initFlags(flags, dispatch);
+export default ({ clientSideId, dispatch, flags, useCamelCaseFlagKeys = true, user, subscribe, options }) => {
+  initFlags(flags, dispatch, useCamelCaseFlagKeys);
 
   // default subscribe to true
   const sanitisedSubscribe = typeof subscribe === 'undefined' ? true : subscribe;
@@ -74,7 +78,7 @@ export default ({ clientSideId, dispatch, flags, user, subscribe, options }) => 
   window.ldClient = ldClientInitialize(clientSideId, user, options);
   window.ldClient.on('ready', () => {
     const flagsSanitised = flags || ldClient.allFlags();
-    setFlags(flagsSanitised, dispatch);
+    setFlags(flagsSanitised, dispatch, useCamelCaseFlagKeys);
 
     if (sanitisedSubscribe) {
       subscribeToChanges(flagsSanitised, dispatch);
