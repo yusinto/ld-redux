@@ -94,7 +94,7 @@ yarn add ld-redux
     ```
 
 ## API
-### init({clientSideId, dispatch, flags, user, subscribe, options})
+### init({clientSideId, dispatch, flags, useCamelCaseFlagKeys, user, subscribe, options})
 The init method accepts an object with the above properties. `clientSideId`, `dispatch` are mandatory.
 
 The `flags` property is optional. This is an object containing all the flags you want to use and subscribe to in your app.
@@ -132,6 +132,9 @@ const defaultUser = {
 ```
 
 For more info on the user object, see [here](http://docs.launchdarkly.com/docs/js-sdk-reference#section-users).
+
+The `useCamelCaseFlagKeys` property is optional. This defaults to true which means by default the flags that are stored
+in redux will be camel cased. If this property is false, no transformation on the flag name will be done.
 
 The `options` property is optional. It can be used to pass in extra options such as [Bootstrapping](https://github.com/launchdarkly/js-client#bootstrapping).
 For example:
