@@ -33,12 +33,12 @@ const setFlags = (flags, dispatch, useCamelCaseFlagKeys) => {
   dispatch(setFlagsAction(flagValues));
 };
 
-const subscribeToChanges = (flags, dispatch) => {
+const subscribeToChanges = (flags, dispatch, useCamelCaseFlagKeys) => {
   for (const flag in flags) {
-    const camelCasedKey = camelCase(flag);
+    const flagKey = useCamelCaseFlagKeys ? camelCase(flag) : flag;
     ldClient.on(`change:${flag}`, current => {
       const newFlagValue = {};
-      newFlagValue[camelCasedKey] = current;
+      newFlagValue[flagKey] = current;
       dispatch(setFlagsAction(newFlagValue));
     });
   }
@@ -81,7 +81,7 @@ export default ({ clientSideId, dispatch, flags, useCamelCaseFlagKeys = true, us
     setFlags(flagsSanitised, dispatch, useCamelCaseFlagKeys);
 
     if (sanitisedSubscribe) {
-      subscribeToChanges(flagsSanitised, dispatch);
+      subscribeToChanges(flagsSanitised, dispatch, useCamelCaseFlagKeys);
     }
   });
 };

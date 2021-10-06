@@ -140,7 +140,7 @@ describe('initialize', () => {
     );
   });
 
-  it('should subscribe to flag changes once ready', () => {
+  it('should subscribe to camelCase flag changes once ready', () => {
     td.when(mock.on('change:test-flag', td.matchers.isA(Function))).thenDo((e, f) => f(true));
     td.when(mock.on('change:another-test-flag', td.matchers.isA(Function))).thenDo((e, f) => f(false));
 
@@ -167,6 +167,40 @@ describe('initialize', () => {
         td.matchers.contains({
           type: 'SET_FLAGS',
           data: { anotherTestFlag: false },
+        }),
+      ),
+    );
+    td.verify(mock.store.dispatch(td.matchers.anything()), { times: 4 });
+  });
+
+  it('should subscribe to kebab-case flag changes once ready', () => {
+    td.when(mock.on('change:test-flag', td.matchers.isA(Function))).thenDo((e, f) => f(true));
+    td.when(mock.on('change:another-test-flag', td.matchers.isA(Function))).thenDo((e, f) => f(false));
+
+    ldReduxInit({
+      clientSideId: MOCK_CLIENT_SIDE_ID,
+      dispatch: mock.store.dispatch,
+      flags: { 'test-flag': false, 'another-test-flag': true },
+      useCamelCaseFlagKeys: false,
+    });
+
+    mock.onReadyHandler();
+
+    jest.runAllTimers();
+
+    td.verify(
+      mock.store.dispatch(
+        td.matchers.contains({
+          type: 'SET_FLAGS',
+          data: { 'test-flag': true },
+        }),
+      ),
+    );
+    td.verify(
+      mock.store.dispatch(
+        td.matchers.contains({
+          type: 'SET_FLAGS',
+          data: { 'another-test-flag': false },
         }),
       ),
     );
